@@ -5,478 +5,443 @@
 {% block content %}
 <!-- Top Header Navigation -->
 <nav class="navbar navbar-dark">
-    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <a class="navbar-brand brand-logo" href="#" id="brand-logo-btn"><i class="fa-solid fa-cube logo-icon"></i>ARENA<span class="logo-accent">.TWIN</span><span class="logo-sub">OS v1.8</span></a>
-        
-        <!-- Navigation Link Shortcuts (SPA Paging Controllers) -->
-        <ul class="nav nav-pills border-0 gap-1 d-flex" id="navShortcutsList" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut active px-2 py-1 text-info" href="#" data-view="overview"><i class="fa-solid fa-table-cells me-1"></i>Overview</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="gemini"><i class="fa-solid fa-sparkles text-info me-1"></i>Gemini Brain</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="lost-child"><i class="fa-solid fa-child text-warning me-1"></i>Lost Child</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="access"><i class="fa-solid fa-wheelchair text-purple me-1"></i>Accessibility</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="queue"><i class="fa-solid fa-calculator text-cyan me-1"></i>Queue AI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="sentiment"><i class="fa-solid fa-face-smile text-success me-1"></i>Sentiment</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="chat"><i class="fa-solid fa-comments text-info me-1"></i>Fan Assist</a>
-            </li>
-        </ul>
-
-        <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
-            <div class="nav-status-item">
-                <i class="fa-solid fa-trophy text-warning"></i>
-                <span id="match-score-span">USA vs England (Loading...)</span>
-            </div>
-            <div class="nav-status-item">
-                <span class="status-dot pulse"></span>
-                <span data-translate="system_live">System Live: Healthy</span>
-            </div>
-            <div class="nav-status-item">
-                <i class="fa-regular fa-clock"></i>
-                <span id="live-timer-clock">20:25:00</span>
-            </div>
-        </div>
-
-        <div class="d-flex align-items-center gap-3">
-            <!-- Show Simulator Toggle button -->
-            <button id="btn-toggle-sim-panel" class="btn btn-outline-info btn-sm px-2 d-none" title="Show Simulation Panel"><i class="fa-solid fa-sliders"></i> <span data-translate="show_simulator">Show Simulator</span></button>
-            
-            <!-- Language Selector Dropdown -->
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-globe me-1"></i> <span id="lang-current">English</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="langDropdown">
-                    <li><a class="dropdown-item lang-opt" href="#" data-lang="en">English</a></li>
-                    <li><a class="dropdown-item lang-opt" href="#" data-lang="es">Español</a></li>
-                    <li><a class="dropdown-item lang-opt" href="#" data-lang="fr">Français</a></li>
-                    <li><a class="dropdown-item lang-opt" href="#" data-lang="de">Deutsch</a></li>
-                    <li><a class="dropdown-item lang-opt" href="#" data-lang="ar">العربية</a></li>
-                </ul>
-            </div>
-
-            <button id="btn-toggle-mute" class="btn btn-outline-info btn-sm px-2" title="Mute/Unmute Narrator"><i class="fa-solid fa-volume-high" id="mute-icon"></i> <span id="mute-text">Narrator ON</span></button>
-            <span class="text-secondary fs-6"><i class="fa-regular fa-user me-1 text-info"></i>{{ role }} ({{ username }})</span>
-            <a href="/api/analytics/report/export" class="btn btn-neon btn-sm"><i class="fa-solid fa-file-pdf me-1"></i>Report</a>
-            <a href="{{ url_for('dashboard.logout') }}" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-right-from-bracket"></i></a>
-        </div>
-    </div>
+<div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-3">
+<a aria-label="Arena Twin Home logo link" class="navbar-brand brand-logo" href="#" id="brand-logo-btn" tabindex="0"><i aria-hidden="true" class="fa-solid fa-cube logo-icon"></i>ARENA<span class="logo-accent">.TWIN</span><span class="logo-sub">OS v1.8</span></a>
+<!-- Navigation Link Shortcuts (SPA Paging Controllers) -->
+<ul class="nav nav-pills border-0 gap-1 d-flex" id="navShortcutsList" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to overview" class="nav-link nav-shortcut active px-2 py-1 text-info" data-view="overview" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-table-cells me-1"></i>Overview</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to gemini" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="gemini" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-sparkles text-info me-1"></i>Gemini Brain</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to lost-child" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="lost-child" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-child text-warning me-1"></i>Lost Child</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to access" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="access" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-wheelchair text-purple me-1"></i>Accessibility</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to queue" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="queue" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-calculator text-cyan me-1"></i>Queue AI</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to sentiment" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="sentiment" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-face-smile text-success me-1"></i>Sentiment</a>
+</li>
+<li class="nav-item">
+<a aria-label="Switch dashboard panel view to chat" class="nav-link nav-shortcut px-2 py-1 text-secondary" data-view="chat" href="#" tabindex="0"><i aria-hidden="true" class="fa-solid fa-comments text-info me-1"></i>Fan Assist</a>
+</li>
+</ul>
+<div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
+<div class="nav-status-item">
+<i aria-hidden="true" class="fa-solid fa-trophy text-warning"></i>
+<span id="match-score-span">USA vs England (Loading...)</span>
+</div>
+<div class="nav-status-item">
+<span class="status-dot pulse"></span>
+<span data-translate="system_live">System Live: Healthy</span>
+</div>
+<div class="nav-status-item">
+<i aria-hidden="true" class="fa-regular fa-clock"></i>
+<span id="live-timer-clock">20:25:00</span>
+</div>
+</div>
+<div class="d-flex align-items-center gap-3">
+<!-- Show Simulator Toggle button -->
+<button aria-label="Show simulation control panel" class="btn btn-outline-info btn-sm px-2 d-none" id="btn-toggle-sim-panel" tabindex="0" title="Show Simulation Panel"><i aria-hidden="true" class="fa-solid fa-sliders"></i> <span data-translate="show_simulator">Show Simulator</span></button>
+<!-- Language Selector Dropdown -->
+<div class="dropdown">
+<button aria-expanded="false" aria-label="Change dashboard display language" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" id="langDropdown" tabindex="0" type="button">
+<i aria-hidden="true" class="fa-solid fa-globe me-1"></i> <span id="lang-current">English</span>
+</button>
+<ul aria-labelledby="langDropdown" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+<li><a class="dropdown-item lang-opt" data-lang="en" href="#">English</a></li>
+<li><a class="dropdown-item lang-opt" data-lang="es" href="#">Español</a></li>
+<li><a class="dropdown-item lang-opt" data-lang="fr" href="#">Français</a></li>
+<li><a class="dropdown-item lang-opt" data-lang="de" href="#">Deutsch</a></li>
+<li><a class="dropdown-item lang-opt" data-lang="ar" href="#">العربية</a></li>
+</ul>
+</div>
+<button aria-label="Toggle voice assistant narration" class="btn btn-outline-info btn-sm px-2" id="btn-toggle-mute" tabindex="0" title="Mute/Unmute Narrator"><i aria-hidden="true" class="fa-solid fa-volume-high" id="mute-icon"></i> <span id="mute-text">Narrator ON</span></button>
+<span class="text-secondary fs-6"><i aria-hidden="true" class="fa-regular fa-user me-1 text-info"></i>{{ role }} ({{ username }})</span>
+<a class="btn btn-neon btn-sm" href="/api/analytics/report/export"><i aria-hidden="true" class="fa-solid fa-file-pdf me-1"></i>Report</a>
+<a class="btn btn-outline-danger btn-sm" href="{{ url_for('dashboard.logout') }}"><i aria-hidden="true" class="fa-solid fa-right-from-bracket"></i></a>
+</div>
+</div>
 </nav>
-
 <!-- Main Grid Dashboard layout -->
 <div class="dashboard-grid">
-    <!-- Left telemetry Column -->
-    <div class="left-column">
-        
-        <!-- Live statistics widgets -->
-        <div class="metrics-row">
-            <div class="glass-panel metric-card cyan">
-                <div class="metric-header">
-                    <span data-translate="attendance">Attendance</span>
-                    <i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Total current attendance in the stands relative to maximum capacity."></i>
-                    <i class="fa-solid fa-users text-info ms-auto"></i>
-                </div>
-                <div class="metric-value" id="val-attendance">{{ attendance }}</div>
-                <div class="metric-footer" id="val-attendance-pct">0% Occupied</div>
-            </div>
-
-            <div class="glass-panel metric-card purple">
-                <div class="metric-header">
-                    <span data-translate="ai_risk">AI Risk Score</span>
-                    <i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Composite real-time risk index calculated by the AI engine based on queue delays, medical incidents, and security alerts."></i>
-                    <i class="fa-solid fa-shield-halved text-purple ms-auto"></i>
-                </div>
-                <div class="metric-value" id="val-risk">0.0%</div>
-                <div class="progress bg-secondary-subtle" style="height: 4px;">
-                    <div id="val-risk-bar" class="progress-bar bg-purple" role="progressbar" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <div class="glass-panel metric-card red">
-                <div class="metric-header">
-                    <span data-translate="active_alerts">Active Alerts</span>
-                    <i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Current uncompleted alarms flagged by CCTV video analytics or security dispatches."></i>
-                    <i class="fa-solid fa-triangle-exclamation ms-auto"></i>
-                </div>
-                <div class="metric-value" id="val-alerts">0</div>
-                <div class="metric-footer" data-translate="realtime_logs">Real-time CCTV logs</div>
-            </div>
-
-            <div class="glass-panel metric-card orange">
-                <div class="metric-header">
-                    <span data-translate="sustainability">Sustainability</span>
-                    <i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Real-time green energy load balancing index derived from solar generation, HVAC load, and battery storage levels."></i>
-                    <i class="fa-solid fa-leaf text-success ms-auto"></i>
-                </div>
-                <div class="metric-value" id="val-sustainability">98.4%</div>
-                <div class="metric-footer" data-translate="hvac_solar">HVAC & Solar Grid</div>
-            </div>
-        </div>
-
-        <!-- 3D Stadium and Map Viewports -->
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="glass-panel p-3">
-                    <h3 class="mb-3 fs-5"><i class="fa-solid fa-cube me-2 text-info"></i><span data-translate="stadium_3d_title">3D Digital Twin Stadium Model</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="3D visual representation of stands and entrance gates. Click on any section to inspect real-time crowd and forecasts. Red color indicates high congestion."></i></h3>
-                    <div class="visualizer-container">
-                        <div id="canvas3d"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="glass-panel p-3">
-                    <h3 class="mb-3 fs-5"><i class="fa-solid fa-map me-2 text-info"></i><span data-translate="live_map_title">Live Perimeter & Transit Map</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="GIS Map tracking transport hubs, parking occupancy, and crowd heatmaps around the stadium grounds."></i></h3>
-                    <div class="map-container" id="map"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chart and Console Output Row -->
-        <div class="row g-3">
-            <div class="col-md-7">
-                <div class="glass-panel p-3">
-                    <h3 class="mb-2 fs-5"><i class="fa-solid fa-chart-line me-2 text-info"></i><span data-translate="realtime_dynamics">Real-time Dynamics</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Analytics tracking attendance trends and utility metrics in real-time."></i></h3>
-                    <div class="row">
-                        <div class="col-6" style="height: 120px;">
-                            <canvas id="crowdChart"></canvas>
+<!-- Left telemetry Column -->
+<div class="left-column">
+<!-- Live statistics widgets -->
+<div class="metrics-row">
+<div class="glass-panel metric-card cyan">
+<div class="metric-header">
+<span data-translate="attendance">Attendance</span>
+<i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Total current attendance in the stands relative to maximum capacity."></i>
+<i aria-hidden="true" class="fa-solid fa-users text-info ms-auto"></i>
+</div>
+<div class="metric-value" id="val-attendance">{{ attendance }}</div>
+<div class="metric-footer" id="val-attendance-pct">0% Occupied</div>
+</div>
+<div class="glass-panel metric-card purple">
+<div class="metric-header">
+<span data-translate="ai_risk">AI Risk Score</span>
+<i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Composite real-time risk index calculated by the AI engine based on queue delays, medical incidents, and security alerts."></i>
+<i aria-hidden="true" class="fa-solid fa-shield-halved text-purple ms-auto"></i>
+</div>
+<div class="metric-value" id="val-risk">0.0%</div>
+<div class="progress bg-secondary-subtle" style="height: 4px;">
+<div class="progress-bar bg-purple" id="val-risk-bar" role="progressbar" style="width: 0%"></div>
+</div>
+</div>
+<div class="glass-panel metric-card red">
+<div class="metric-header">
+<span data-translate="active_alerts">Active Alerts</span>
+<i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Current uncompleted alarms flagged by CCTV video analytics or security dispatches."></i>
+<i aria-hidden="true" class="fa-solid fa-triangle-exclamation ms-auto"></i>
+</div>
+<div class="metric-value" id="val-alerts">0</div>
+<div class="metric-footer" data-translate="realtime_logs">Real-time CCTV logs</div>
+</div>
+<div class="glass-panel metric-card orange">
+<div class="metric-header">
+<span data-translate="sustainability">Sustainability</span>
+<i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-1" data-bs-toggle="tooltip" title="Real-time green energy load balancing index derived from solar generation, HVAC load, and battery storage levels."></i>
+<i aria-hidden="true" class="fa-solid fa-leaf text-success ms-auto"></i>
+</div>
+<div class="metric-value" id="val-sustainability">98.4%</div>
+<div class="metric-footer" data-translate="hvac_solar">HVAC &amp; Solar Grid</div>
+</div>
+</div>
+<!-- 3D Stadium and Map Viewports -->
+<div class="row g-3">
+<div class="col-md-6">
+<div class="glass-panel p-3">
+<h3 class="mb-3 fs-5"><i aria-hidden="true" class="fa-solid fa-cube me-2 text-info"></i><span data-translate="stadium_3d_title">3D Digital Twin Stadium Model</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="3D visual representation of stands and entrance gates. Click on any section to inspect real-time crowd and forecasts. Red color indicates high congestion."></i></h3>
+<div class="visualizer-container">
+<div id="canvas3d"></div>
+</div>
+</div>
+</div>
+<div class="col-md-6">
+<div class="glass-panel p-3">
+<h3 class="mb-3 fs-5"><i aria-hidden="true" class="fa-solid fa-map me-2 text-info"></i><span data-translate="live_map_title">Live Perimeter &amp; Transit Map</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="GIS Map tracking transport hubs, parking occupancy, and crowd heatmaps around the stadium grounds."></i></h3>
+<div class="map-container" id="map"></div>
+</div>
+</div>
+</div>
+<!-- Chart and Console Output Row -->
+<div class="row g-3">
+<div class="col-md-7">
+<div class="glass-panel p-3">
+<h3 class="mb-2 fs-5"><i aria-hidden="true" class="fa-solid fa-chart-line me-2 text-info"></i><span data-translate="realtime_dynamics">Real-time Dynamics</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Analytics tracking attendance trends and utility metrics in real-time."></i></h3>
+<div class="row">
+<div class="col-6" style="height: 120px;">
+<canvas id="crowdChart"></canvas>
+</div>
+<div class="col-6" style="height: 120px;">
+<canvas id="utilityChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-5">
+<div class="glass-panel p-3">
+<h3 class="mb-2 fs-5"><i aria-hidden="true" class="fa-solid fa-terminal me-2 text-info"></i><span data-translate="log_console">System Log Console</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Real-time streaming data logs from sensors, ticketing gates, and security dispatches."></i></h3>
+<div class="log-console" id="console-log-feed">
+<div class="log-entry info">Stadium Digital Twin System Online. Initializing websockets...</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Control and Gemini Column -->
+<div class="right-column">
+<!-- Emergency Simulations panel -->
+<div class="glass-panel p-3">
+<h3 class="mb-3 fs-5"><i aria-hidden="true" class="fa-solid fa-circle-exclamation me-2 text-danger"></i><span data-translate="emergency_command">Emergency Command</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Trigger immediate evacuations or emergency routines across the stadium. Resolving returns operations back to green."></i></h3>
+<div class="d-flex gap-2">
+<button aria-label="Trigger simulation safety alert" class="btn btn-neon btn-emergency flex-grow-1" id="btn-trigger-emergency" tabindex="0"><i aria-hidden="true" class="fa-solid fa-fire me-1"></i><span data-translate="simulate_alert">Simulate Alert</span></button>
+<button aria-label="Reset emergency command center" class="btn btn-outline-secondary btn-sm" id="btn-reset-operations" tabindex="0"><i aria-hidden="true" class="fa-solid fa-rotate"></i> <span data-translate="reset">Reset</span></button>
+</div>
+</div>
+<!-- Stadium Telemetry Simulator Control panel -->
+<div class="glass-panel p-3" id="simulation-panel-card">
+<div class="d-flex justify-content-between align-items-center mb-1">
+<h3 class="m-0 fs-5"><i aria-hidden="true" class="fa-solid fa-sliders me-2 text-info"></i><span data-translate="simulation_panel">Simulation Control Panel</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Adjust telemetry inputs manually. Use this panel to test the digital twin and verify AI recommendations."></i></h3>
+<button aria-label="Close simulation control panel" class="btn btn-sm text-secondary p-0" id="btn-close-sim" tabindex="0" title="Hide Simulation Panel"><i aria-hidden="true" class="fa-solid fa-xmark fs-5"></i></button>
+</div>
+<p class="text-warning mb-3" style="font-size: 11px; font-weight: 600;"><i aria-hidden="true" class="fa-solid fa-triangle-exclamation me-1"></i>⚠️ <span data-translate="sim_testing_only">FOR SIMULATION &amp; TELEMETRY TESTING ONLY</span></p>
+<!-- Weather overrides -->
+<div class="mb-3">
+<label class="text-secondary fw-bold d-block mb-1" data-translate="weather_scenarios" style="font-size: 12px">WEATHER SCENARIOS</label>
+<div class="btn-group w-100" role="group">
+<button aria-label="Set weather scenario to Clear" class="btn btn-outline-info btn-sm btn-sim-weather" data-translate="clear" data-weather="Clear" tabindex="0" type="button">Clear</button>
+<button aria-label="Set weather scenario to Heavy Rain" class="btn btn-outline-info btn-sm btn-sim-weather" data-translate="rain" data-weather="Heavy Rain" tabindex="0" type="button">Rain</button>
+<button aria-label="Set weather scenario to Heatwave" class="btn btn-outline-info btn-sm btn-sim-weather" data-translate="heatwave" data-weather="Heatwave" tabindex="0" type="button">Heatwave</button>
+</div>
+</div>
+<!-- Crowd adjustments -->
+<div class="mb-3">
+<label class="text-secondary fw-bold d-block mb-1" data-translate="crowd_modifiers" style="font-size: 12px">CROWD VOLUME MODIFIERS</label>
+<div class="d-flex gap-2">
+<button aria-label="Increase crowd volume by 20 percent" class="btn btn-outline-info btn-sm flex-grow-1" id="btn-sim-crowd-inc" tabindex="0"><i aria-hidden="true" class="fa-solid fa-plus me-1"></i><span data-translate="crowd_inc">Crowd +20%</span></button>
+<button aria-label="Decrease crowd volume by 20 percent" class="btn btn-outline-info btn-sm flex-grow-1" id="btn-sim-crowd-dec" tabindex="0"><i aria-hidden="true" class="fa-solid fa-minus me-1"></i><span data-translate="crowd_dec">Crowd -20%</span></button>
+</div>
+</div>
+<!-- Temperature Adjustments -->
+<div class="mb-3">
+<label class="text-secondary fw-bold d-block mb-1" data-translate="climate_thermostat" style="font-size: 12px">CLIMATE THERMOSTAT</label>
+<div class="d-flex gap-2">
+<button aria-label="Increase climate temperature by 3 degrees" class="btn btn-outline-info btn-sm flex-grow-1" id="btn-sim-temp-inc" tabindex="0"><i aria-hidden="true" class="fa-solid fa-temperature-arrow-up me-1"></i><span data-translate="temp_inc">Temp +3°C</span></button>
+<button aria-label="Decrease climate temperature by 3 degrees" class="btn btn-outline-info btn-sm flex-grow-1" id="btn-sim-temp-dec" tabindex="0"><i aria-hidden="true" class="fa-solid fa-temperature-arrow-down me-1"></i><span data-translate="temp_dec">Temp -3°C</span></button>
+</div>
+</div>
+<!-- Power Cut / Utility Fault -->
+<div>
+<button aria-label="Trigger power grid failure" class="btn btn-outline-danger btn-sm w-100" id="btn-sim-power-cut" tabindex="0"><i aria-hidden="true" class="fa-solid fa-plug-circle-xmark me-1"></i><span data-translate="power_outage" id="power-cut-btn-text">Trigger Power Outage</span></button>
+</div>
+</div>
+<!-- Selected Zone & Operations Specialist Assistant Card -->
+<div class="glass-panel p-3">
+<!-- Nav Tabs -->
+<ul class="nav nav-tabs border-0 mb-3 gap-1" id="assistantTabs" role="tablist" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
+<li class="nav-item" role="presentation">
+<button class="nav-link active text-uppercase px-2 py-1 border-0 rounded text-info bg-dark bg-opacity-50" data-bs-target="#tab-zone-details" data-bs-toggle="tab" id="zone-tab" role="tab" type="button"><i aria-hidden="true" class="fa-solid fa-bullseye me-1"></i>Zone Tech</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" data-bs-target="#tab-lost-child" data-bs-toggle="tab" id="lost-child-tab" role="tab" type="button"><i aria-hidden="true" class="fa-solid fa-child me-1"></i>Lost Child</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" data-bs-target="#tab-accessibility" data-bs-toggle="tab" id="access-tab" role="tab" type="button"><i aria-hidden="true" class="fa-solid fa-wheelchair me-1"></i>Access</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" data-bs-target="#tab-queue-opt" data-bs-toggle="tab" id="queue-tab" role="tab" type="button"><i aria-hidden="true" class="fa-solid fa-calculator me-1"></i>Queue AI</button>
+</li>
+<li class="nav-item" role="presentation">
+<button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" data-bs-target="#tab-sentiment" data-bs-toggle="tab" id="sentiment-tab" role="tab" type="button"><i aria-hidden="true" class="fa-solid fa-face-smile me-1"></i>Sentiment</button>
+</li>
+</ul>
+<div class="tab-content" id="assistantTabsContent">
+<!-- TAB 1: ZONE TELEMETRY DETAILS -->
+<div class="tab-pane fade show active" id="tab-zone-details" role="tabpanel">
+<div class="d-flex justify-content-between mb-2">
+<span class="fw-bold" data-translate="select_zone" id="zone-detail-name">Select Stand or Gate</span>
+<span class="color-badge green" id="zone-detail-status">GREEN</span>
+</div>
+<div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+<span data-translate="zone_type">Zone Type:</span>
+<span class="text-white" id="zone-detail-type">-</span>
+</div>
+<div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+<span data-translate="current_crowd">Current Crowd:</span>
+<span class="text-white" id="zone-detail-crowd">-</span>
+</div>
+<div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+<span data-translate="queue_wait">Queue Wait:</span>
+<span class="text-white" id="zone-detail-queue">-</span>
+</div>
+<div class="d-flex justify-content-between text-secondary mb-2 fs-6">
+<span data-translate="temperature">Temperature:</span>
+<span class="text-white" id="zone-detail-temp">-</span>
+</div>
+<div class="d-flex justify-content-between text-secondary mb-2 fs-6">
+<span data-translate="sector_risk">Sector Risk Index:</span>
+<span class="text-white" id="zone-detail-risk">-</span>
+</div>
+<hr style="border-color: var(--border-color); margin: 8px 0;"/>
+<span class="d-block text-secondary mb-2 fw-bold" data-translate="ai_predictions" style="font-size: 11px">AI PREDICTION FORECASTS (15-60m)</span>
+<div id="zone-detail-predictions">
+<span class="text-secondary" data-translate="click_predictions" style="font-size: 12px">Click any sector to query AI predictions...</span>
+</div>
+</div>
+<!-- TAB 2: LOST CHILD ASSISTANT -->
+<div class="tab-pane fade" id="tab-lost-child" role="tabpanel">
+<div class="d-flex flex-column gap-2">
+<span class="d-block text-secondary fw-bold" style="font-size: 12px">REPORT MISSING SPECTATOR</span>
+<div class="row g-2">
+<div class="col-6">
+<input aria-label="Missing spectator name input field" class="form-control bg-black bg-opacity-50 text-white border-secondary" id="lc-name" placeholder="Child Name" style="font-size: 13.5px; height: 36px;" tabindex="0" type="text"/>
+</div>
+<div class="col-6">
+<input aria-label="Missing spectator shirt color input field" class="form-control bg-black bg-opacity-50 text-white border-secondary" id="lc-shirt" placeholder="Shirt Color" style="font-size: 13.5px; height: 36px;" tabindex="0" type="text"/>
+</div>
+</div>
+<div class="row g-2">
+<div class="col-12">
+<select aria-label="Select last seen location of missing spectator" class="form-select bg-black bg-opacity-50 text-white border-secondary" id="lc-last-seen" style="font-size: 13.5px; height: 36px;" tabindex="0">
+<option value="gate_a">Last Seen: Gate A (North)</option>
+<option value="gate_b">Last Seen: Gate B (East)</option>
+<option value="gate_c">Last Seen: Gate C (West)</option>
+<option value="vip_entrance">Last Seen: VIP Entrance</option>
+<option value="food_court_north">Last Seen: Food Court North</option>
+</select>
+</div>
+</div>
+<button aria-label="Initialize lost child search grid" class="btn btn-neon w-100" id="btn-lc-search" style="height: 38px; font-size: 13.5px;" tabindex="0"><i aria-hidden="true" class="fa-solid fa-magnifying-glass me-1"></i>Initialize Search Grid</button>
+<!-- Spotted Alert Results -->
+<div class="d-none mt-2 p-2 rounded border border-warning bg-black bg-opacity-50 text-warning" id="lc-result" style="font-size: 13px;">
+<div class="fw-bold mb-1"><i aria-hidden="true" class="fa-solid fa-video me-1"></i>CAMERA FEEDS SPOTTED</div>
+<p class="mb-1 text-white" id="lc-result-msg"></p>
+<div class="d-flex justify-content-between text-secondary" style="font-size: 11px;">
+<span>Spotted Area: <b class="text-info" id="lc-result-zone"></b></span>
+<span class="text-success"><i aria-hidden="true" class="fa-solid fa-satellite-dish me-1"></i>Volunteers Notified</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 3: ACCESSIBILITY ASSISTANT -->
+<div class="tab-pane fade" id="tab-accessibility" role="tabpanel">
+<div class="d-flex flex-column gap-2">
+<span class="d-block text-secondary fw-bold" style="font-size: 12px">ACCESSIBLE TRANSIT ROUTER</span>
+<div class="row g-2">
+<div class="col-6">
+<select aria-label="Select transit departure parking or hub location" class="form-select bg-black bg-opacity-50 text-white border-secondary" id="acc-source" style="font-size: 13px; height: 34px;" tabindex="0">
+<option value="parking_east">From: Parking East</option>
+<option value="parking_vip">From: Parking VIP</option>
+<option value="metro_station">From: Metro Hub</option>
+</select>
+</div>
+<div class="col-6">
+<select aria-label="Select transit arrival stands tier location" class="form-select bg-black bg-opacity-50 text-white border-secondary" id="acc-dest" style="font-size: 13px; height: 34px;" tabindex="0">
+<option value="stand_lower">To: Lower Stands</option>
+<option value="vip_entrance">To: VIP Suites</option>
+</select>
+</div>
+</div>
+<div class="btn-group w-100" role="group">
+<button aria-label="Set transit routing guidelines for wheelchair" class="btn btn-outline-info btn-acc-type active" data-type="wheelchair" style="font-size: 13px; padding: 6px;" tabindex="0" type="button"><i aria-hidden="true" class="fa-solid fa-wheelchair me-1"></i>Wheelchair</button>
+<button aria-label="Set transit routing guidelines for visually impaired" class="btn btn-outline-info btn-acc-type" data-type="visually_impaired" style="font-size: 13px; padding: 6px;" tabindex="0" type="button"><i aria-hidden="true" class="fa-solid fa-eye-slash me-1"></i>Audio Guide</button>
+</div>
+<button aria-label="Generate step-free transit route" class="btn btn-outline-info w-100" id="btn-acc-generate" style="height: 36px; font-size: 13px;" tabindex="0"><i aria-hidden="true" class="fa-solid fa-route me-1"></i>Generate Safe Route</button>
+<!-- Route details -->
+<div class="d-none mt-2 p-2 rounded bg-black bg-opacity-50 border border-secondary" id="acc-route-box" style="font-size: 13px;">
+<div class="d-flex justify-content-between text-secondary mb-2" style="font-size: 11px;">
+<span>Elevator Wait: <b class="text-warning" id="acc-wait-time">0m</b></span>
+<span>Seating: <b class="text-white" id="acc-seating">-</b></span>
+</div>
+<div class="text-secondary fw-bold mb-1" style="font-size: 11px;">ACCESSIBLE DIRECTIONS:</div>
+<ol class="m-0 pl-3 text-white" id="acc-directions-list" style="padding-left: 15px; font-size: 12.5px;"></ol>
+</div>
+</div>
+</div>
+<!-- TAB 4: AI QUEUE OPTIMIZER -->
+<div class="tab-pane fade" id="tab-queue-opt" role="tabpanel">
+<div class="d-flex flex-column gap-2">
+<div class="d-flex justify-content-between align-items-center">
+<span class="text-secondary fw-bold" style="font-size: 12px">AI PREDICTIVE CONCESSIONS MATRIX</span>
+<button aria-label="Balance concession stand registers" class="btn btn-neon p-1 px-3" id="btn-queue-apply" style="font-size: 12px; height: 32px;" tabindex="0"><i aria-hidden="true" class="fa-solid fa-wand-magic-sparkles me-1"></i>Balance Grid</button>
+</div>
+<div class="table-responsive m-0">
+<table class="table table-dark table-borderless m-0" style="font-size: 13px; --bs-table-bg: transparent;">
+<thead>
+<tr class="text-secondary border-bottom border-secondary">
+<th>Concession</th>
+<th>Current Queue</th>
+<th>Forecast (15m)</th>
+<th>AI Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="fw-bold">North Food Court</td>
+<td id="q-n-curr">28 mins</td>
+<td class="text-warning" id="q-n-fore">38 mins</td>
+<td class="text-info fw-semibold">Open 3 registers</td>
+</tr>
+<tr>
+<td class="fw-bold">West Food Court</td>
+<td id="q-w-curr">12 mins</td>
+<td id="q-w-fore">14 mins</td>
+<td class="text-secondary">Optimal</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="d-none p-2 rounded bg-black bg-opacity-50 text-info border border-info" id="queue-opt-log" style="font-size: 12.5px;">
+<i aria-hidden="true" class="fa-solid fa-circle-check me-1"></i>AI reallocated checkout operators to North concessions!
                         </div>
-                        <div class="col-6" style="height: 120px;">
-                            <canvas id="utilityChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="glass-panel p-3">
-                    <h3 class="mb-2 fs-5"><i class="fa-solid fa-terminal me-2 text-info"></i><span data-translate="log_console">System Log Console</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Real-time streaming data logs from sensors, ticketing gates, and security dispatches."></i></h3>
-                    <div class="log-console" id="console-log-feed">
-                        <div class="log-entry info">Stadium Digital Twin System Online. Initializing websockets...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Right Control and Gemini Column -->
-    <div class="right-column">
-        
-        <!-- Emergency Simulations panel -->
-        <div class="glass-panel p-3">
-            <h3 class="mb-3 fs-5"><i class="fa-solid fa-circle-exclamation me-2 text-danger"></i><span data-translate="emergency_command">Emergency Command</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Trigger immediate evacuations or emergency routines across the stadium. Resolving returns operations back to green."></i></h3>
-            <div class="d-flex gap-2">
-                <button id="btn-trigger-emergency" class="btn btn-neon btn-emergency flex-grow-1"><i class="fa-solid fa-fire me-1"></i><span data-translate="simulate_alert">Simulate Alert</span></button>
-                <button id="btn-reset-operations" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-rotate"></i> <span data-translate="reset">Reset</span></button>
-            </div>
-        </div>
-
-        <!-- Stadium Telemetry Simulator Control panel -->
-        <div class="glass-panel p-3" id="simulation-panel-card">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <h3 class="m-0 fs-5"><i class="fa-solid fa-sliders me-2 text-info"></i><span data-translate="simulation_panel">Simulation Control Panel</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Adjust telemetry inputs manually. Use this panel to test the digital twin and verify AI recommendations."></i></h3>
-                <button id="btn-close-sim" class="btn btn-sm text-secondary p-0" title="Hide Simulation Panel"><i class="fa-solid fa-xmark fs-5"></i></button>
-            </div>
-            <p class="text-warning mb-3" style="font-size: 11px; font-weight: 600;"><i class="fa-solid fa-triangle-exclamation me-1"></i>⚠️ <span data-translate="sim_testing_only">FOR SIMULATION & TELEMETRY TESTING ONLY</span></p>
-            
-            <!-- Weather overrides -->
-            <div class="mb-3">
-                <label class="text-secondary fw-bold d-block mb-1" style="font-size: 12px" data-translate="weather_scenarios">WEATHER SCENARIOS</label>
-                <div class="btn-group w-100" role="group">
-                    <button type="button" class="btn btn-outline-info btn-sm btn-sim-weather" data-weather="Clear" data-translate="clear">Clear</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-sim-weather" data-weather="Heavy Rain" data-translate="rain">Rain</button>
-                    <button type="button" class="btn btn-outline-info btn-sm btn-sim-weather" data-weather="Heatwave" data-translate="heatwave">Heatwave</button>
-                </div>
-            </div>
-
-            <!-- Crowd adjustments -->
-            <div class="mb-3">
-                <label class="text-secondary fw-bold d-block mb-1" style="font-size: 12px" data-translate="crowd_modifiers">CROWD VOLUME MODIFIERS</label>
-                <div class="d-flex gap-2">
-                    <button id="btn-sim-crowd-inc" class="btn btn-outline-info btn-sm flex-grow-1"><i class="fa-solid fa-plus me-1"></i><span data-translate="crowd_inc">Crowd +20%</span></button>
-                    <button id="btn-sim-crowd-dec" class="btn btn-outline-info btn-sm flex-grow-1"><i class="fa-solid fa-minus me-1"></i><span data-translate="crowd_dec">Crowd -20%</span></button>
-                </div>
-            </div>
-
-            <!-- Temperature Adjustments -->
-            <div class="mb-3">
-                <label class="text-secondary fw-bold d-block mb-1" style="font-size: 12px" data-translate="climate_thermostat">CLIMATE THERMOSTAT</label>
-                <div class="d-flex gap-2">
-                    <button id="btn-sim-temp-inc" class="btn btn-outline-info btn-sm flex-grow-1"><i class="fa-solid fa-temperature-arrow-up me-1"></i><span data-translate="temp_inc">Temp +3°C</span></button>
-                    <button id="btn-sim-temp-dec" class="btn btn-outline-info btn-sm flex-grow-1"><i class="fa-solid fa-temperature-arrow-down me-1"></i><span data-translate="temp_dec">Temp -3°C</span></button>
-                </div>
-            </div>
-
-            <!-- Power Cut / Utility Fault -->
-            <div>
-                <button id="btn-sim-power-cut" class="btn btn-outline-danger btn-sm w-100"><i class="fa-solid fa-plug-circle-xmark me-1"></i><span id="power-cut-btn-text" data-translate="power_outage">Trigger Power Outage</span></button>
-            </div>
-        </div>
-
-        <!-- Selected Zone & Operations Specialist Assistant Card -->
-        <div class="glass-panel p-3">
-            <!-- Nav Tabs -->
-            <ul class="nav nav-tabs border-0 mb-3 gap-1" id="assistantTabs" role="tablist" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active text-uppercase px-2 py-1 border-0 rounded text-info bg-dark bg-opacity-50" id="zone-tab" data-bs-toggle="tab" data-bs-target="#tab-zone-details" type="button" role="tab"><i class="fa-solid fa-bullseye me-1"></i>Zone Tech</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="lost-child-tab" data-bs-toggle="tab" data-bs-target="#tab-lost-child" type="button" role="tab"><i class="fa-solid fa-child me-1"></i>Lost Child</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="access-tab" data-bs-toggle="tab" data-bs-target="#tab-accessibility" type="button" role="tab"><i class="fa-solid fa-wheelchair me-1"></i>Access</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="queue-tab" data-bs-toggle="tab" data-bs-target="#tab-queue-opt" type="button" role="tab"><i class="fa-solid fa-calculator me-1"></i>Queue AI</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="sentiment-tab" data-bs-toggle="tab" data-bs-target="#tab-sentiment" type="button" role="tab"><i class="fa-solid fa-face-smile me-1"></i>Sentiment</button>
-                </li>
-            </ul>
-
-            <div class="tab-content" id="assistantTabsContent">
-                <!-- TAB 1: ZONE TELEMETRY DETAILS -->
-                <div class="tab-pane fade show active" id="tab-zone-details" role="tabpanel">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span id="zone-detail-name" class="fw-bold" data-translate="select_zone">Select Stand or Gate</span>
-                        <span id="zone-detail-status" class="color-badge green">GREEN</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                        <span data-translate="zone_type">Zone Type:</span>
-                        <span id="zone-detail-type" class="text-white">-</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                        <span data-translate="current_crowd">Current Crowd:</span>
-                        <span id="zone-detail-crowd" class="text-white">-</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                        <span data-translate="queue_wait">Queue Wait:</span>
-                        <span id="zone-detail-queue" class="text-white">-</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
-                        <span data-translate="temperature">Temperature:</span>
-                        <span id="zone-detail-temp" class="text-white">-</span>
-                    </div>
-                    <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
-                        <span data-translate="sector_risk">Sector Risk Index:</span>
-                        <span id="zone-detail-risk" class="text-white">-</span>
-                    </div>
-                    
-                    <hr style="border-color: var(--border-color); margin: 8px 0;" />
-                    <span class="d-block text-secondary mb-2 fw-bold" style="font-size: 11px" data-translate="ai_predictions">AI PREDICTION FORECASTS (15-60m)</span>
-                    <div id="zone-detail-predictions">
-                        <span class="text-secondary" style="font-size: 12px" data-translate="click_predictions">Click any sector to query AI predictions...</span>
-                    </div>
-                </div>
-
-                <!-- TAB 2: LOST CHILD ASSISTANT -->
-                <div class="tab-pane fade" id="tab-lost-child" role="tabpanel">
-                    <div class="d-flex flex-column gap-2">
-                        <span class="d-block text-secondary fw-bold" style="font-size: 12px">REPORT MISSING SPECTATOR</span>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <input type="text" id="lc-name" class="form-control bg-black bg-opacity-50 text-white border-secondary" placeholder="Child Name" style="font-size: 13.5px; height: 36px;" />
-                            </div>
-                            <div class="col-6">
-                                <input type="text" id="lc-shirt" class="form-control bg-black bg-opacity-50 text-white border-secondary" placeholder="Shirt Color" style="font-size: 13.5px; height: 36px;" />
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-12">
-                                <select id="lc-last-seen" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13.5px; height: 36px;">
-                                    <option value="gate_a">Last Seen: Gate A (North)</option>
-                                    <option value="gate_b">Last Seen: Gate B (East)</option>
-                                    <option value="gate_c">Last Seen: Gate C (West)</option>
-                                    <option value="vip_entrance">Last Seen: VIP Entrance</option>
-                                    <option value="food_court_north">Last Seen: Food Court North</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button id="btn-lc-search" class="btn btn-neon w-100" style="height: 38px; font-size: 13.5px;"><i class="fa-solid fa-magnifying-glass me-1"></i>Initialize Search Grid</button>
-                        
-                        <!-- Spotted Alert Results -->
-                        <div id="lc-result" class="d-none mt-2 p-2 rounded border border-warning bg-black bg-opacity-50 text-warning" style="font-size: 13px;">
-                            <div class="fw-bold mb-1"><i class="fa-solid fa-video me-1"></i>CAMERA FEEDS SPOTTED</div>
-                            <p class="mb-1 text-white" id="lc-result-msg"></p>
-                            <div class="d-flex justify-content-between text-secondary" style="font-size: 11px;">
-                                <span>Spotted Area: <b id="lc-result-zone" class="text-info"></b></span>
-                                <span class="text-success"><i class="fa-solid fa-satellite-dish me-1"></i>Volunteers Notified</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: ACCESSIBILITY ASSISTANT -->
-                <div class="tab-pane fade" id="tab-accessibility" role="tabpanel">
-                    <div class="d-flex flex-column gap-2">
-                        <span class="d-block text-secondary fw-bold" style="font-size: 12px">ACCESSIBLE TRANSIT ROUTER</span>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <select id="acc-source" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13px; height: 34px;">
-                                    <option value="parking_east">From: Parking East</option>
-                                    <option value="parking_vip">From: Parking VIP</option>
-                                    <option value="metro_station">From: Metro Hub</option>
-                                </select>
-                            </div>
-                            <div class="col-6">
-                                <select id="acc-dest" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13px; height: 34px;">
-                                    <option value="stand_lower">To: Lower Stands</option>
-                                    <option value="vip_entrance">To: VIP Suites</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="btn-group w-100" role="group">
-                            <button type="button" class="btn btn-outline-info btn-acc-type active" data-type="wheelchair" style="font-size: 13px; padding: 6px;"><i class="fa-solid fa-wheelchair me-1"></i>Wheelchair</button>
-                            <button type="button" class="btn btn-outline-info btn-acc-type" data-type="visually_impaired" style="font-size: 13px; padding: 6px;"><i class="fa-solid fa-eye-slash me-1"></i>Audio Guide</button>
-                        </div>
-                        <button id="btn-acc-generate" class="btn btn-outline-info w-100" style="height: 36px; font-size: 13px;"><i class="fa-solid fa-route me-1"></i>Generate Safe Route</button>
-
-                        <!-- Route details -->
-                        <div id="acc-route-box" class="d-none mt-2 p-2 rounded bg-black bg-opacity-50 border border-secondary" style="font-size: 13px;">
-                            <div class="d-flex justify-content-between text-secondary mb-2" style="font-size: 11px;">
-                                <span>Elevator Wait: <b id="acc-wait-time" class="text-warning">0m</b></span>
-                                <span>Seating: <b id="acc-seating" class="text-white">-</b></span>
-                            </div>
-                            <div class="text-secondary fw-bold mb-1" style="font-size: 11px;">ACCESSIBLE DIRECTIONS:</div>
-                            <ol id="acc-directions-list" class="m-0 pl-3 text-white" style="padding-left: 15px; font-size: 12.5px;"></ol>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 4: AI QUEUE OPTIMIZER -->
-                <div class="tab-pane fade" id="tab-queue-opt" role="tabpanel">
-                    <div class="d-flex flex-column gap-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-secondary fw-bold" style="font-size: 12px">AI PREDICTIVE CONCESSIONS MATRIX</span>
-                            <button id="btn-queue-apply" class="btn btn-neon p-1 px-3" style="font-size: 12px; height: 32px;"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Balance Grid</button>
-                        </div>
-                        <div class="table-responsive m-0">
-                            <table class="table table-dark table-borderless m-0" style="font-size: 13px; --bs-table-bg: transparent;">
-                                <thead>
-                                    <tr class="text-secondary border-bottom border-secondary">
-                                        <th>Concession</th>
-                                        <th>Current Queue</th>
-                                        <th>Forecast (15m)</th>
-                                        <th>AI Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="fw-bold">North Food Court</td>
-                                        <td id="q-n-curr">28 mins</td>
-                                        <td id="q-n-fore" class="text-warning">38 mins</td>
-                                        <td class="text-info fw-semibold">Open 3 registers</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold">West Food Court</td>
-                                        <td id="q-w-curr">12 mins</td>
-                                        <td id="q-w-fore">14 mins</td>
-                                        <td class="text-secondary">Optimal</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="queue-opt-log" class="d-none p-2 rounded bg-black bg-opacity-50 text-info border border-info" style="font-size: 12.5px;">
-                            <i class="fa-solid fa-circle-check me-1"></i>AI reallocated checkout operators to North concessions!
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 5: FAN SENTIMENT TRACKER -->
-                <div class="tab-pane fade" id="tab-sentiment" role="tabpanel">
-                    <div class="d-flex flex-column gap-2">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="text-secondary fw-bold" style="font-size: 12px">REAL-TIME SENTIMENT INDICES</span>
-                            <div class="d-flex align-items-center gap-1">
-                                <span class="text-secondary" style="font-size: 11px;">Happiness:</span>
-                                <b id="sentiment-happiness-score" class="text-success" style="font-size: 13.5px;">92.5%</b>
-                            </div>
-                        </div>
-                        
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
-                                    <span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">COMPLAINT HOTSPOTS</span>
-                                    <div id="sentiment-hotspots" class="text-white mt-1" style="font-size: 12px; line-height: 1.2; font-weight: 600;">
+</div>
+</div>
+<!-- TAB 5: FAN SENTIMENT TRACKER -->
+<div class="tab-pane fade" id="tab-sentiment" role="tabpanel">
+<div class="d-flex flex-column gap-2">
+<div class="d-flex align-items-center justify-content-between">
+<span class="text-secondary fw-bold" style="font-size: 12px">REAL-TIME SENTIMENT INDICES</span>
+<div class="d-flex align-items-center gap-1">
+<span class="text-secondary" style="font-size: 11px;">Happiness:</span>
+<b class="text-success" id="sentiment-happiness-score" style="font-size: 13.5px;">92.5%</b>
+</div>
+</div>
+<div class="row g-2">
+<div class="col-6">
+<div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
+<span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">COMPLAINT HOTSPOTS</span>
+<div class="text-white mt-1" id="sentiment-hotspots" style="font-size: 12px; line-height: 1.2; font-weight: 600;">
                                         None reported
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
-                                    <span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">TRENDING ISSUES</span>
-                                    <div id="sentiment-tags" class="d-flex flex-wrap gap-1 mt-1">
-                                        <span class="badge bg-secondary" style="font-size: 9px; padding: 2px 4px;">#wc2026</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-2 rounded bg-black bg-opacity-50 border border-secondary" style="font-size: 13px;">
-                            <div class="text-secondary fw-bold mb-1" style="font-size: 10px;">LIVE SPECTATOR FEEDBACK:</div>
-                            <div id="sentiment-feed-post" class="text-white-50" style="font-style: italic; min-height: 18px;">
+</div>
+</div>
+<div class="col-6">
+<div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
+<span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">TRENDING ISSUES</span>
+<div class="d-flex flex-wrap gap-1 mt-1" id="sentiment-tags">
+<span class="badge bg-secondary" style="font-size: 9px; padding: 2px 4px;">#wc2026</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-2 rounded bg-black bg-opacity-50 border border-secondary" style="font-size: 13px;">
+<div class="text-secondary fw-bold mb-1" style="font-size: 10px;">LIVE SPECTATOR FEEDBACK:</div>
+<div class="text-white-50" id="sentiment-feed-post" style="font-style: italic; min-height: 18px;">
                                 Awaiting data feeds...
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Gemini AI recommendation Panel -->
-        <div class="glass-panel p-3 gemini-panel hidden-by-view" id="gemini-panel-card">
-            <div class="gemini-header">
-                <div class="gemini-avatar">
-                    <i class="fa-solid fa-sparkles text-white" style="font-size: 12px"></i>
-                </div>
-                <span data-translate="gemini_brain">Gemini OS Brain</span>
-                <i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Google Gemini AI Decision Engine analyzing telemetry and alerts to output priority dispatches and multilingual public audio broadcasts."></i>
-            </div>
-            
-            <span class="d-block text-secondary mb-1 fw-bold" style="font-size: 12px" data-translate="core_analysis">CORE ANALYSIS</span>
-            <div id="gemini-analysis-summary" class="mb-3 text-white" style="font-size: 13.5px">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Gemini AI recommendation Panel -->
+<div class="glass-panel p-3 gemini-panel hidden-by-view" id="gemini-panel-card">
+<div class="gemini-header">
+<div class="gemini-avatar">
+<i aria-hidden="true" class="fa-solid fa-sparkles text-white" style="font-size: 12px"></i>
+</div>
+<span data-translate="gemini_brain">Gemini OS Brain</span>
+<i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Google Gemini AI Decision Engine analyzing telemetry and alerts to output priority dispatches and multilingual public audio broadcasts."></i>
+</div>
+<span class="d-block text-secondary mb-1 fw-bold" data-translate="core_analysis" style="font-size: 12px">CORE ANALYSIS</span>
+<div class="mb-3 text-white" id="gemini-analysis-summary" style="font-size: 13.5px">
                 Analyzing stadium telemetry vectors...
             </div>
-
-            <span class="d-block text-secondary mb-2 fw-bold" style="font-size: 12px" data-translate="priority_actions">PRIORITY OPERATOR ACTIONS</span>
-            <div id="gemini-actions-list">
-                <div class="text-secondary text-center">Loading AI guidance...</div>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <span class="text-secondary fw-bold" style="font-size: 12px" data-translate="multilingual_announcement">MULTILINGUAL PUBLIC ANNOUNCEMENT</span>
-                <button id="btn-speak-announcement" class="btn btn-outline-warning btn-sm p-1 px-2" style="font-size: 11px;"><i class="fa-solid fa-volume-high me-1"></i>Read Aloud</button>
-            </div>
-            <div id="gemini-announcement" class="p-2 rounded bg-black bg-opacity-50 text-warning" style="font-size: 12.5px; border-left: 2px solid var(--neon-orange);">
+<span class="d-block text-secondary mb-2 fw-bold" data-translate="priority_actions" style="font-size: 12px">PRIORITY OPERATOR ACTIONS</span>
+<div id="gemini-actions-list">
+<div class="text-secondary text-center">Loading AI guidance...</div>
+</div>
+<div class="d-flex justify-content-between align-items-center mb-1">
+<span class="text-secondary fw-bold" data-translate="multilingual_announcement" style="font-size: 12px">MULTILINGUAL PUBLIC ANNOUNCEMENT</span>
+<button aria-label="Read public announcement aloud" class="btn btn-outline-warning btn-sm p-1 px-2" id="btn-speak-announcement" style="font-size: 11px;" tabindex="0"><i aria-hidden="true" class="fa-solid fa-volume-high me-1"></i>Read Aloud</button>
+</div>
+<div class="p-2 rounded bg-black bg-opacity-50 text-warning" id="gemini-announcement" style="font-size: 12.5px; border-left: 2px solid var(--neon-orange);">
                 Awaiting dynamic broadcast string...
             </div>
-        </div>
-
-        <!-- Fan Experience Chat Assistant Panel -->
-        <div class="glass-panel p-3 hidden-by-view" id="fan-portal-card">
-            <h3 class="mb-3 fs-5"><i class="fa-solid fa-comments me-2 text-info"></i><span data-translate="fan_assistant_portal">Fan Assistance Portal</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Multilingual chatbot helper utilizing state parameters to answer fan queries (transit, concessions, lost & found, emergency rules)."></i></h3>
-            <div class="chat-container">
-                <div class="chat-messages" id="chat-messages">
-                    <div class="chat-bubble bot" data-translate="chat_welcome">Hello! Welcome to FIFA World Cup 2026. Ask me about gates, metro transit, restrooms, or fastest food courts.</div>
-                </div>
-                <div class="chat-input-row">
-                    <button class="btn btn-outline-info btn-sm px-2" id="chat-voice-btn" title="Speak question"><i class="fa-solid fa-microphone"></i></button>
-                    <input type="text" class="chat-input" id="chat-input-text" placeholder="Type or speak question..." />
-                    <button class="btn btn-neon btn-sm" id="chat-send-btn"><i class="fa-regular fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
-    <!-- Toast Container for Notifications -->
-    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999; pointer-events: none; display: flex; flex-direction: column; gap: 8px;"></div>
+</div>
+<!-- Fan Experience Chat Assistant Panel -->
+<div class="glass-panel p-3 hidden-by-view" id="fan-portal-card">
+<h3 class="mb-3 fs-5"><i aria-hidden="true" class="fa-solid fa-comments me-2 text-info"></i><span data-translate="fan_assistant_portal">Fan Assistance Portal</span><i aria-hidden="true" class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Multilingual chatbot helper utilizing state parameters to answer fan queries (transit, concessions, lost &amp; found, emergency rules)."></i></h3>
+<div class="chat-container">
+<div class="chat-messages" id="chat-messages">
+<div class="chat-bubble bot" data-translate="chat_welcome">Hello! Welcome to FIFA World Cup 2026. Ask me about gates, metro transit, restrooms, or fastest food courts.</div>
+</div>
+<div class="chat-input-row">
+<button aria-label="Speak question using voice input" class="btn btn-outline-info btn-sm px-2" id="chat-voice-btn" tabindex="0" title="Speak question"><i aria-hidden="true" class="fa-solid fa-microphone"></i></button>
+<input aria-label="Type query or question for the fan chatbot helper" class="chat-input" id="chat-input-text" placeholder="Type or speak question..." tabindex="0" type="text"/>
+<button aria-label="Send message to assistant" class="btn btn-neon btn-sm" id="chat-send-btn" tabindex="0"><i aria-hidden="true" class="fa-regular fa-paper-plane"></i></button>
+</div>
+</div>
+</div>
+<!-- Toast Container for Notifications -->
+<div class="position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index: 99999; pointer-events: none; display: flex; flex-direction: column; gap: 8px;"></div>
 </div>
 {% endblock %}
 
@@ -488,7 +453,6 @@
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 <script src="{{ url_for('static', filename='js/assistant.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-
 <script>
     window.onload = function() {
         // Initialize Live Clock timer
@@ -515,3 +479,4 @@
     };
 </script>
 {% endblock %}
+</div>

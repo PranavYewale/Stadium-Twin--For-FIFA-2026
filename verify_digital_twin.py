@@ -28,6 +28,22 @@ class TestStadiumTwin(unittest.TestCase):
         response = self.client.get('/dashboard')
         self.assertEqual(response.status_code, 302) # Redirects to login since unauthenticated
         print("[OK] Authenticated /dashboard redirects to login for anonymous operators.")
+        
+        # Test valid login submit
+        payload = {'username': 'admin', 'password': 'worldcup2026'}
+        response = self.client.post('/login', data=payload)
+        self.assertEqual(response.status_code, 302) # Redirects to dashboard after authentication
+        print("[OK] Authorized Operator connection authenticated successfully.")
+
+    def test_simulation_status_polling(self):
+        """2.5. Verify status polling yields valid telemetry payload"""
+        response = self.client.get('/api/simulation/status')
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.data)
+        self.assertIn('zones', data)
+        self.assertIn('attendance', data)
+        self.assertIn('weather', data)
+        print("[OK] Simulation Status polling endpoint returns valid state telemetry.")
 
     def test_dashboard_api_attendance(self):
         """3. Verify Attendance computes Stands-only zones correctly (Case-insensitive check)"""

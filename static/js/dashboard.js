@@ -13,12 +13,103 @@ let allZonesData = {};
 const spokenAlerts = new Set();
 const congestedZones = new Set();
 
+let httpPollingInterval = null;
+
+function startHttpPolling() {
+    if (httpPollingInterval) return;
+    logConsole('SYSTEM', 'Initializing AJAX polling fallback loop (3s ticks)...', 'warning');
+    
+    pollStadiumStatus();
+    httpPollingInterval = setInterval(pollStadiumStatus, 3000);
+}
+
+function pollStadiumStatus() {
+    fetch('/api/simulation/status')
+        .then(res => res.json())
+        .then(data => {
+            updateDashboardWidgets(data);
+            updateZoneDetailsPanel(data.zones);
+            if (window.update3DStadiumColors) {
+                window.update3DStadiumColors(data.zones);
+            }
+            if (window.updateLiveMapState) {
+                window.updateLiveMapState(data.zones);
+            }
+            
+            // Sync with AI recommendations panel if present
+            if (data.recommendations && data.recommendations.length > 0) {
+                const recsList = document.getElementById('gemini-actions-list');
+                const analysisSummary = document.getElementById('gemini-analysis-summary');
+                const announcementBox = document.getElementById('gemini-announcement');
+                
+                if (recsList && analysisSummary && announcementBox) {
+                    analysisSummary.textContent = data.recommendations[0].issue || 'All systems nominal.';
+                    
+                    let html = '';
+                    data.recommendations.forEach(action => {
+                        let priorityClass = 'badge bg-success';
+                        if (action.priority === 'High' || action.priority === 'Critical') priorityClass = 'badge bg-danger';
+                        else if (action.priority === 'Medium') priorityClass = 'badge bg-warning text-dark';
+                        
+                        html += `
+                            <div class="p-2 mb-2 rounded bg-dark bg-opacity-20 border border-secondary">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-bold" style="font-size: 13px">${action.title}</span>
+                                    <span class="${priorityClass}" style="font-size: 10px">${action.priority}</span>
+                                </div>
+                                <span class="d-block text-secondary mb-1" style="font-size: 11px">LOCATION: ${action.location || 'Global'}</span>
+                                <p class="m-0 text-white" style="font-size: 12.5px">${action.recommendation}</p>
+                                <span class="d-block text-info mt-1" style="font-size: 11px">Outcome: ${action.expected_outcome || 'N/A'}</span>
+                            </div>
+                        `;
+                    });
+                    recsList.innerHTML = html;
+                    
+                    // Announcement fallback
+                    if (data.alerts && data.alerts.length > 0) {
+                        announcementBox.textContent = `ALERT BROADCAST: ${data.alerts[0].message}`;
+                    } else {
+                        announcementBox.textContent = `WELCOME: Welcome to MetLife Stadium digital twin command center! Make sure to inspect concessions waiting matrices.`;
+                    }
+                }
+            }
+            
+            // Keep local cache
+            data.zones.forEach(z => {
+                allZonesData[z.id] = z;
+            });
+        })
+        .catch(err => console.error("Polling error:", err));
+}
+
 function initDashboard() {
-    // 1. Initialize WebSockets
-    socket = io();
+    // 1. Initialize WebSockets with reconnection configs
+    socket = io({
+        timeout: 4000,
+        reconnectionDelay: 2000
+    });
+    
+    // Set a timer to check if socket fails to connect
+    const socketTimeout = setTimeout(() => {
+        if (!socket.connected) {
+            logConsole('SYSTEM', 'WebSocket connection timeout. Falling back to HTTP polling...', 'warning');
+            startHttpPolling();
+        }
+    }, 4500);
     
     socket.on('connect', () => {
+        clearTimeout(socketTimeout);
         logConsole('SYSTEM', 'Connected to Stadium Brain digital twin OS.', 'info');
+        if (httpPollingInterval) {
+            clearInterval(httpPollingInterval);
+            httpPollingInterval = null;
+        }
+    });
+    
+    socket.on('connect_error', () => {
+        clearTimeout(socketTimeout);
+        logConsole('SYSTEM', 'WebSocket connection failed. Falling back to HTTP polling...', 'warning');
+        startHttpPolling();
     });
 
     socket.on('stadium_update', (data) => {

@@ -10,6 +10,9 @@ api_bp = Blueprint('api', __name__)
 
 @api_bp.route('/api/dashboard')
 def get_dashboard_summary():
+    from flask import current_app
+    from services.simulation import trigger_lazy_tick
+    trigger_lazy_tick(current_app)
     zones = Zone.query.all()
     alerts = Alert.query.filter_by(resolved=False).all()
     recs = Recommendation.query.all()
@@ -310,6 +313,46 @@ def update_simulation_override():
     return jsonify({
         'status': 'success',
         'overrides': SIMULATION_OVERRIDES
+    })
+
+@api_bp.route('/api/simulation/status')
+def get_simulation_status():
+    from flask import current_app
+    from services.simulation import trigger_lazy_tick, GLOBAL_TICK_COUNT
+    trigger_lazy_tick(current_app)
+    
+    zones = Zone.query.all()
+    active_alerts = Alert.query.filter_by(resolved=False).all()
+    latest_sus = Sustainability.query.order_by(Sustainability.timestamp.desc()).first()
+    
+    # Calculate attendance
+    total_attendance = sum(z.current_crowd for z in zones if z.zone_type.lower() == 'stand')
+    
+    # Weather
+    from services.weather import get_current_weather
+    weather_info = get_current_weather()
+    if SIMULATION_OVERRIDES['weather_condition']:
+        weather_info['condition'] = SIMULATION_OVERRIDES['weather_condition']
+        if SIMULATION_OVERRIDES['weather_condition'] == 'Heatwave':
+            weather_info['temp'] = 39.5
+    if SIMULATION_OVERRIDES['temp_adjust'] != 0.0:
+        weather_info['temp'] += SIMULATION_OVERRIDES['temp_adjust']
+            
+    # Recommendations
+    recs = Recommendation.query.all()
+    
+    return jsonify({
+        'zones': [z.to_dict() for z in zones],
+        'weather': weather_info,
+        'sustainability': latest_sus.to_dict() if latest_sus else {},
+        'alerts': [a.to_dict() for a in active_alerts],
+        'attendance': total_attendance,
+        'recommendations': [r.to_dict() for r in recs],
+        'match_info': {
+            'status': 'Second Half' if GLOBAL_TICK_COUNT > 60 else 'First Half',
+            'teams': 'USA vs England',
+            'score': f"{random.randint(0,2)} - {random.randint(0,2)}"
+        }
     })
 
 # --- SPECIALIST ASSISTANT ENDPOINTS ---

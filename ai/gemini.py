@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import random
+from config import Config
 
 def generate_gemini_recommendation(stadium_state_json, prediction_json, active_alerts_json, weather_info=None):
     """
@@ -9,7 +10,9 @@ def generate_gemini_recommendation(stadium_state_json, prediction_json, active_a
     If the API call fails or the GEMINI_API_KEY is not configured, it returns a 
     realistic, dynamically compiled expert operator recommendation.
     """
-    api_key = os.environ.get('GEMINI_API_KEY') or ''
+    # Detect PythonAnywhere or configured offline mode to bypass blocked internet calls
+    is_offline = getattr(Config, 'OFFLINE_MODE', False) or 'pythonanywhere' in os.environ.get('PYTHONANYWHERE_DOMAIN', '').lower() or 'pythonanywhere' in os.environ.get('PYTHONANYWHERE_SITE', '').lower()
+    api_key = '' if is_offline else (os.environ.get('GEMINI_API_KEY') or '')
     
     # Weather mock string
     weather_desc = f"{weather_info.get('temp', 24)}°C, {weather_info.get('condition', 'Clear')}" if weather_info else "24°C, Clear"

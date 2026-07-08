@@ -19,7 +19,7 @@ class User(db.Model):
 
 class Zone(db.Model):
     __tablename__ = 'zones'
-    id = db.Column(db.String(64), primary_key=False, unique=True)
+    id = db.Column(db.String(64), primary_key=False, unique=True, index=True)
     # We use a string ID like 'gate_a', 'stand_101', 'parking_east', 'metro_station'
     db_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
@@ -57,7 +57,7 @@ class Alert(db.Model):
     message = db.Column(db.String(256), nullable=False)
     level = db.Column(db.String(16), default='info') # info, warning, critical
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    resolved = db.Column(db.Boolean, default=False)
+    resolved = db.Column(db.Boolean, default=False, index=True)
     zone_id = db.Column(db.String(64), nullable=True)
 
     def to_dict(self):
@@ -74,7 +74,7 @@ class Alert(db.Model):
 class Prediction(db.Model):
     __tablename__ = 'predictions'
     id = db.Column(db.Integer, primary_key=True)
-    zone_id = db.Column(db.String(64), nullable=False)
+    zone_id = db.Column(db.String(64), nullable=False, index=True)
     time_offset = db.Column(db.Integer, nullable=False) # 15, 30, 60 minutes
     predicted_crowd = db.Column(db.Integer, nullable=False)
     predicted_queue = db.Column(db.Integer, nullable=False)
@@ -97,7 +97,7 @@ class Prediction(db.Model):
 class Sustainability(db.Model):
     __tablename__ = 'sustainability'
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     energy_kwh = db.Column(db.Float, default=0.0)
     water_liters = db.Column(db.Float, default=0.0)
     waste_kg = db.Column(db.Float, default=0.0)
@@ -124,7 +124,7 @@ class Recommendation(db.Model):
     issue = db.Column(db.String(256), nullable=False)
     recommendation = db.Column(db.Text, nullable=False)
     expected_outcome = db.Column(db.String(256), nullable=True)
-    resolved = db.Column(db.Boolean, default=False)
+    resolved = db.Column(db.Boolean, default=False, index=True)
 
     def to_dict(self):
         return {

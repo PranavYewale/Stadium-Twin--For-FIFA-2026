@@ -16,6 +16,10 @@ def index():
     if 'username' not in session:
         return redirect(url_for('dashboard.login'))
     
+    from flask import current_app
+    from services.simulation import trigger_lazy_tick
+    trigger_lazy_tick(current_app)
+    
     # Fetch current state to initialize the page before websockets kick in
     zones = Zone.query.all()
     alerts = Alert.query.filter_by(resolved=False).all()
