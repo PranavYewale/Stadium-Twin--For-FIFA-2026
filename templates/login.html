@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Stadium Digital Twin OS{% endblock %}
+
+{% block content %}
+<div class="login-body">
+    <div class="glass-panel login-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="font-size: 28px; text-shadow: var(--glow-cyan);"><i class="fa-solid fa-brain me-2 text-info"></i>STADIUM<span>.OS</span></h2>
+            <p class="text-secondary" style="font-size: 13.5px;">FIFA World Cup 2026 Digital Twin</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-danger p-2 mb-3 text-center" style="font-size: 13px;">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('dashboard.login') }}" method="POST">
+            <div class="form-group">
+                <label for="username">Operator Access ID</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="e.g. admin, operator, security" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">System Passkey</label>
+                <input type="password" name="password" id="password" class="form-control" placeholder="••••••••" required />
+            </div>
+
+            <div class="form-group">
+                <p class="text-secondary text-center mb-3" style="font-size: 12.5px;">
+                    Demo accounts seeded: <b>admin / operator / security</b><br>
+                    Passkey: <b>worldcup2026</b>
+                </p>
+            </div>
+
+            <button type="submit" class="btn btn-neon w-100 mt-2">Authorize Connection</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
