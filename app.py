@@ -15,6 +15,22 @@ from routes.api import api_bp
 app = Flask(__name__)
 app.config.from_object(Config)
 
+# Secure Response Headers Middleware (Defense-in-depth protection)
+@app.after_request
+def add_security_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; "
+        "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; "
+        "img-src 'self' data: https://*.tile.openstreetmap.org; "
+        "connect-src 'self' ws: wss: http: https:;"
+    )
+    return response
+
 # Initialize Database
 db.init_app(app)
 
@@ -62,4 +78,5 @@ setup_app()
 
 if __name__ == '__main__':
     # Host on all interfaces for network access, port 5000
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    socketio.run(app, host='0.0.0.0', port=5000, debug=debug_mode)

@@ -58,19 +58,3 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('dashboard.landing'))
-
-@dashboard_bp.route('/seed-user')
-def seed_user():
-    """
-    Convenience endpoint to seed initial roles for hackathon testing.
-    """
-    if User.query.first() is not None:
-        return "Users already seeded."
-        
-    roles = ['Admin', 'Operator', 'Security', 'Volunteer', 'Medical']
-    for role in roles:
-        u = User(username=role.lower(), role=role)
-        u.set_password('worldcup2026')
-        db.session.add(u)
-    db.session.commit()
-    return "Demo users seeded. Credentials: admin/worldcup2026, operator/worldcup2026, etc."
