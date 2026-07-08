@@ -122,6 +122,58 @@ function maxVal(a, b) {
     return a > b ? a : b;
 }
 
+let activeFlashCircle = null;
+
+function flashMapMarker(zoneId) {
+    if (!map) return;
+    const loc = MAP_LOCATIONS[zoneId];
+    if (!loc) return;
+    
+    // Clear old flash circle
+    if (activeFlashCircle) {
+        map.removeLayer(activeFlashCircle);
+    }
+    
+    // Create new flashing circle
+    activeFlashCircle = L.circle(loc.coords, {
+        color: '#ff0055',
+        fillColor: '#ff0055',
+        fillOpacity: 0.5,
+        radius: 120,
+        weight: 3
+    }).addTo(map);
+    
+    // Pan to the location
+    map.panTo(loc.coords);
+    
+    // Make it pulse visually
+    let growing = true;
+    let radius = 120;
+    const interval = setInterval(() => {
+        if (!activeFlashCircle || !map.hasLayer(activeFlashCircle)) {
+            clearInterval(interval);
+            return;
+        }
+        if (growing) {
+            radius += 8;
+            if (radius > 180) growing = false;
+        } else {
+            radius -= 8;
+            if (radius < 70) growing = true;
+        }
+        activeFlashCircle.setRadius(radius);
+    }, 50);
+    
+    // Auto remove after 15 seconds
+    setTimeout(() => {
+        if (activeFlashCircle) {
+            map.removeLayer(activeFlashCircle);
+            activeFlashCircle = null;
+        }
+    }, 15000);
+}
+
 // Global hooks
 window.initLiveMap = initLiveMap;
 window.updateLiveMapState = updateLiveMapState;
+window.flashMapMarker = flashMapMarker;

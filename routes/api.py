@@ -1,20 +1,21 @@
 from flask import Blueprint, jsonify, request
 from database.models import db, Zone, Alert, Prediction, Sustainability, Recommendation
 from datetime import datetime
+import random
 from services.simulation import SIMULATION_OVERRIDES
 
 api_bp = Blueprint('api', __name__)
 
 # --- GET ENDPOINTS ---
 
-@api_bp.route('/dashboard')
+@api_bp.route('/api/dashboard')
 def get_dashboard_summary():
     zones = Zone.query.all()
     alerts = Alert.query.filter_by(resolved=False).all()
     recs = Recommendation.query.all()
     
-    total_attendance = sum(z.current_crowd for z in zones if z.zone_type == 'stand')
-    total_capacity = sum(z.capacity for z in zones if z.zone_type == 'stand')
+    total_attendance = sum(z.current_crowd for z in zones if z.zone_type.lower() == 'stand')
+    total_capacity = sum(z.capacity for z in zones if z.zone_type.lower() == 'stand')
     
     # Calculate average risk
     avg_risk = sum(z.risk_score for z in zones) / max(1, len(zones))
@@ -47,8 +48,8 @@ def get_map_markers():
 @api_bp.route('/crowd')
 def get_crowd_metrics():
     zones = Zone.query.all()
-    stands = [z.to_dict() for z in zones if z.zone_type == 'stand']
-    entrances = [z.to_dict() for z in zones if z.zone_type == 'entrance']
+    stands = [z.to_dict() for z in zones if z.zone_type.lower() == 'stand']
+    entrances = [z.to_dict() for z in zones if z.zone_type.lower() == 'entrance']
     return jsonify({
         'stands': stands,
         'entrances': entrances,
@@ -309,4 +310,135 @@ def update_simulation_override():
     return jsonify({
         'status': 'success',
         'overrides': SIMULATION_OVERRIDES
+    })
+
+# --- SPECIALIST ASSISTANT ENDPOINTS ---
+
+@api_bp.route('/api/assistant/lost-child', methods=['POST'])
+def lost_child_search():
+    data = request.json or {}
+    name = data.get('name', 'Child')
+    color = data.get('color', 'Red')
+    last_seen = data.get('last_seen', 'gate_a')
+    
+    # AI Camera Search simulation: child spotted adjacent to last seen based on crowd flow
+    zone_connections = {
+        'gate_a': 'stand_lower',
+        'gate_b': 'stand_middle',
+        'gate_c': 'stand_upper',
+        'vip_entrance': 'parking_vip',
+        'stand_lower': 'food_court_north',
+        'stand_middle': 'food_court_west',
+        'stand_upper': 'metro_station',
+        'food_court_north': 'gate_a',
+        'food_court_west': 'gate_c',
+        'parking_east': 'gate_b',
+        'parking_west': 'gate_c',
+        'parking_vip': 'vip_entrance',
+        'metro_station': 'gate_a',
+        'bus_stop': 'gate_c'
+    }
+    
+    spotted_zone_id = zone_connections.get(last_seen, 'stand_lower')
+    zone = Zone.query.filter_by(id=spotted_zone_id).first() or Zone.query.first()
+    
+    # Generate alert
+    new_alert = Alert(
+        alert_type='lost_child',
+        message=f"MISSING PERSON: {name} ({color} shirt) spotted near {zone.name}. Volunteers dispatched.",
+        level='critical',
+        zone_id=zone.id
+    )
+    db.session.add(new_alert)
+    db.session.commit()
+    
+    return jsonify({
+        'spotted_zone': zone.to_dict(),
+        'message': f"Grid sweep active. Search cameras spotted matching subject at {zone.name}.",
+        'alert_id': new_alert.id
+    })
+
+@api_bp.route('/api/assistant/accessibility', methods=['POST'])
+def accessibility_assist():
+    data = request.json or {}
+    source = data.get('source', 'parking_east')
+    dest = data.get('destination', 'stand_lower')
+    assist_type = data.get('type', 'wheelchair')
+    
+    routes = {
+        'wheelchair': [
+            "Enter via East ramp elevator bank E1",
+            "Take Lift E1 to concourse level 2",
+            "Proceed via step-free corridor toward Sector Lower A"
+        ],
+        'visually_impaired': [
+            "Bleep beacon active on Gate B entry path",
+            "Tactile paving guides to concourse Sector B",
+            "Proceed 30 meters straight, turn right at concessions."
+        ]
+    }
+    
+    selected_route = routes.get(assist_type, routes['wheelchair'])
+    elevator_wait = random_element_wait = random.randint(2, 6)
+    
+    return jsonify({
+        'route': selected_route,
+        'elevator_wait_min': elevator_wait,
+        'restroom_location': 'Parking VIP (Fully Accessible)',
+        'seating_block': 'Block Lower 108 (Wheelchair spaces available)'
+    })
+
+@api_bp.route('/api/assistant/queue-optimize', methods=['POST'])
+def queue_optimize():
+    zones = Zone.query.all()
+    reassignments = []
+    
+    food_north = Zone.query.filter_by(id='food_court_north').first()
+    food_west = Zone.query.filter_by(id='food_court_west').first()
+    
+    if food_north and food_north.queue_length > 15:
+        food_north.queue_length = max(2, food_north.queue_length - 8)
+        reassignments.append("Assigned 3 temporary counters at North Food Court")
+        
+    if food_west and food_west.queue_length > 15:
+        food_west.queue_length = max(2, food_west.queue_length - 6)
+        reassignments.append("Reallocated 2 operators to West Food Court checkout lanes")
+        
+    db.session.commit()
+    
+    return jsonify({
+        'status': 'success',
+        'actions': reassignments if reassignments else ["Queues optimal. Staff balances within margins."]
+    })
+
+@api_bp.route('/api/assistant/sentiment', methods=['GET'])
+def sentiment_analysis():
+    zones = Zone.query.all()
+    avg_risk = sum(z.risk_score for z in zones) / max(1, len(zones))
+    happiness = max(45.0, round(96.0 - (avg_risk * 0.4), 1))
+    
+    hotspots = []
+    if avg_risk > 30:
+        hotspots.append({'location': 'Metro Station', 'issue': 'Long wait lines'})
+    if any(z.queue_length > 15 for z in zones):
+        hotspots.append({'location': 'Food Courts', 'issue': 'Food counter bottlenecks'})
+        
+    if not hotspots:
+        hotspots.append({'location': 'None', 'issue': 'Nominal feedback'})
+        
+    feed = [
+        {"user": "@stadiumfan26", "text": "Stands are rocking! USA vs ENG is crazy! #wc2026", "sentiment": "positive"},
+        {"user": "@soccerqueen", "text": "Restrooms near Gate C are clean, thanks to sanitation staff!", "sentiment": "positive"},
+        {"user": "@transitguy", "text": "Bus lines are packing up outside parking lot east. #stadiumtransit", "sentiment": "negative"}
+    ]
+    
+    return jsonify({
+        'happiness_score': happiness,
+        'hotspots': hotspots,
+        'trending_tags': [
+            {'tag': '#restroom-lines', 'count': 4 if avg_risk > 20 else 1},
+            {'tag': '#cold-drinks', 'count': 8},
+            {'tag': '#matchdayglow', 'count': 23}
+        ],
+        'feed': feed
     })

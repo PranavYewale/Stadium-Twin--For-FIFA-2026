@@ -369,7 +369,7 @@ function bindDashboardUI() {
                 .then(res => res.json())
                 .then(data => {
                     logConsole('SYSTEM', 'All emergency protocols resolved. Returning to normal state.', 'info');
-                    location.reload();
+                    showNotification('SYSTEM COMMAND', 'All emergency logs resolved. Nominal operations restored.', 'success');
                 });
         });
     }
@@ -388,6 +388,18 @@ function bindDashboardUI() {
                 logConsole('SIMULATOR', `Weather scenario set to: ${weatherVal}`, 'info');
                 document.querySelectorAll('.btn-sim-weather').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                
+                // Show toast notification
+                let toastType = 'info';
+                let msg = `Climate scenario set to normal weather.`;
+                if (weatherVal === 'Heavy Rain') {
+                    toastType = 'warning';
+                    msg = 'Heavy rainstorm scenario activated stadium-wide.';
+                } else if (weatherVal === 'Heatwave') {
+                    toastType = 'danger';
+                    msg = 'Extreme heatwave scenario active. Utility cooling grid load elevated.';
+                }
+                showNotification('WEATHER SCENARIO', msg, toastType);
             });
         });
     });
@@ -408,6 +420,7 @@ function bindDashboardUI() {
             .then(res => res.json())
             .then(data => {
                 logConsole('SIMULATOR', `Crowd scaling adjusted to: ${Math.round(currentCrowdScale * 100)}%`, 'warning');
+                showNotification('CROWD MODIFIER', `Spectator volume scaled up to ${Math.round(currentCrowdScale * 100)}%.`, 'warning');
             });
         });
     }
@@ -423,6 +436,7 @@ function bindDashboardUI() {
             .then(res => res.json())
             .then(data => {
                 logConsole('SIMULATOR', `Crowd scaling adjusted to: ${Math.round(currentCrowdScale * 100)}%`, 'info');
+                showNotification('CROWD MODIFIER', `Spectator volume scaled down to ${Math.round(currentCrowdScale * 100)}%.`, 'info');
             });
         });
     }
@@ -443,6 +457,7 @@ function bindDashboardUI() {
             .then(res => res.json())
             .then(data => {
                 logConsole('SIMULATOR', `Climate thermostat offset set to: +${currentTempAdjust}°C`, 'warning');
+                showNotification('THERMOSTAT MODIFIER', `Climate thermostat offset increased to +${currentTempAdjust}°C.`, 'warning');
             });
         });
     }
@@ -458,6 +473,7 @@ function bindDashboardUI() {
             .then(res => res.json())
             .then(data => {
                 logConsole('SIMULATOR', `Climate thermostat offset set to: ${currentTempAdjust}°C`, 'info');
+                showNotification('THERMOSTAT MODIFIER', `Climate thermostat offset decreased to ${currentTempAdjust}°C.`, 'info');
             });
         });
     }
@@ -480,11 +496,13 @@ function bindDashboardUI() {
                     btnPowerCut.classList.add('btn-danger');
                     btnPowerCut.innerHTML = '<i class="fa-solid fa-plug-circle-check me-1"></i>Restore Grid Power';
                     logConsole('SIMULATOR', 'CRITICAL POWER GRID OUTAGE TRIGGERED.', 'critical');
+                    showNotification('UTILITY INCIDENT', 'CRITICAL: Grid power outage triggered! Back-up solar batteries loaded.', 'danger');
                 } else {
                     btnPowerCut.classList.remove('btn-danger');
                     btnPowerCut.classList.add('btn-outline-danger');
                     btnPowerCut.innerHTML = '<i class="fa-solid fa-plug-circle-xmark me-1"></i>Trigger Power Outage';
                     logConsole('SIMULATOR', 'Grid power restored. Generators offline.', 'info');
+                    showNotification('UTILITY RESTORED', 'Main power grid restored. Backup diesel generators returned offline.', 'success');
                 }
             });
         });
@@ -512,3 +530,37 @@ function bindDashboardUI() {
 
 window.selectStadiumZone = selectStadiumZone;
 window.initDashboard = initDashboard;
+
+function showNotification(title, message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = `glass-toast toast-type-${type}`;
+    toast.style.pointerEvents = 'auto';
+    
+    let icon = 'fa-circle-info text-info';
+    if (type === 'success') icon = 'fa-circle-check text-success';
+    if (type === 'warning') icon = 'fa-triangle-exclamation text-warning';
+    if (type === 'danger') icon = 'fa-circle-exclamation text-danger';
+
+    toast.innerHTML = `
+        <div class="glass-toast-header">
+            <div>
+                <i class="fa-solid ${icon} me-2"></i>
+                <span>${title}</span>
+            </div>
+            <button type="button" class="btn-close-toast" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+        <div class="glass-toast-body">${message}</div>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('toast-fade-out');
+        setTimeout(() => toast.remove(), 400);
+    }, 4500);
+}
+
+window.showNotification = showNotification;

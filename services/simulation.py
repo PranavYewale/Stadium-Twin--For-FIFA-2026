@@ -109,10 +109,10 @@ def run_simulation_loop(app, socketio):
                 # Calculate total attendance
                 total_attendance = 0
                 for zone in zones:
-                    if zone.zone_type == 'stand':
+                    if zone.zone_type.lower() == 'stand':
                         total_attendance += zone.current_crowd
                 
-                iot_info = iot.get_iot_telemetry(total_attendance)
+                iot_info = iot.get_iot_telemetry(total_attendance, weather_info)
                 if SIMULATION_OVERRIDES['power_cut']:
                     iot_info['energy_kwh'] = 0.0
                     iot_info['hvac_load_pct'] = 0.0
@@ -194,35 +194,6 @@ def run_simulation_loop(app, socketio):
                     # Update temperature and other standard variables
                     zone.temperature = round(weather_info['temp'] + random.uniform(-0.5, 1.2), 1)
                     
-                    # Randomly increment medical incidents if rolls align
-                    med_roll = medical.check_medical_incidents()
-                    if med_roll and random.random() < 0.05:
-                        zone.medical_incidents += 1
-                        # Create alert
-                        new_alert = Alert(
-                            alert_type='medical',
-                            message=f"{med_roll['msg']} at {zone.name}",
-                            level=med_roll['level'],
-                            zone_id=zone.id
-                        )
-                        db.session.add(new_alert)
-                        
-                    # CV analysis on cameras
-                    cv_roll = camera.process_cctv_cv(zone.id)
-                    if cv_roll['detected']:
-                        new_alert = Alert(
-                            alert_type=cv_roll['anomaly_type'],
-                            message=cv_roll['message'],
-                            level=cv_roll['level'],
-                            zone_id=zone.id
-                        )
-                        db.session.add(new_alert)
-                        # Elevate security levels
-                        if cv_roll['level'] == 'critical':
-                            zone.security_level = 'Critical'
-                        elif cv_roll['level'] == 'warning':
-                            zone.security_level = 'High'
-                            
                     # Recalculate Risk & Status
                     risk, status = calculate_zone_risk(
                         zone.current_crowd,
@@ -235,6 +206,40 @@ def run_simulation_loop(app, socketio):
                     zone.status = status
                     
                     updated_zones.append(zone.to_dict())
+                    
+                # --- GLOBAL ALERTS INGESTION (Low spam frequency) ---
+                # Roll once globally per tick for medical alerts (~1.5% chance)
+                if random.random() < 0.015:
+                    med_roll = medical.check_medical_incidents()
+                    if med_roll:
+                        target_zone = random.choice([z for z in zones if z.zone_type in ['stand', 'entrance', 'amenity']])
+                        target_zone.medical_incidents += 1
+                        
+                        new_alert = Alert(
+                            alert_type='medical',
+                            message=f"{med_roll['msg']} at {target_zone.name}",
+                            level=med_roll['level'],
+                            zone_id=target_zone.id
+                        )
+                        db.session.add(new_alert)
+                        
+                # Roll once globally per tick for camera CV anomalies (~1.2% chance)
+                if random.random() < 0.012:
+                    target_zone = random.choice(zones)
+                    cv_roll = camera.process_cctv_cv(target_zone.id)
+                    if cv_roll['detected']:
+                        if cv_roll['level'] == 'critical':
+                            target_zone.security_level = 'Critical'
+                        elif cv_roll['level'] == 'warning':
+                            target_zone.security_level = 'High'
+                            
+                        new_alert = Alert(
+                            alert_type=cv_roll['anomaly_type'],
+                            message=f"{cv_roll['message']} at {target_zone.name}",
+                            level=cv_roll['level'],
+                            zone_id=target_zone.id
+                        )
+                        db.session.add(new_alert)
                     
                 # 2. Run Predictions for all zones (Every 10 seconds or every simulation cycle)
                 # Clear past predictions
@@ -258,12 +263,18 @@ def run_simulation_loop(app, socketio):
                         prediction_dicts.append(pred.to_dict())
                         
                 # 3. Update Sustainability Metrics
+                sus_base_score = 100.0 - (iot_info['energy_kwh']/2000.0 * 25.0) - (iot_info['water_liters_sec']/30.0 * 15.0)
+                if SIMULATION_OVERRIDES['power_cut']:
+                    sus_base_score -= 45.0  # generator emissions penalty
+                elif weather_info and weather_info.get('condition') == 'Heatwave':
+                    sus_base_score -= 15.0  # high utility strain cooling penalty
+
                 sus = Sustainability(
                     energy_kwh=iot_info['energy_kwh'],
-                    water_liters=iot_info['water_liters_sec'] * 3.0, # aggregate flow over tick
-                    waste_kg=total_attendance * 0.005, # ~5g of waste per person per 3 seconds
+                    water_liters=iot_info['water_liters_sec'] * 3.0,
+                    waste_kg=total_attendance * 0.005,
                     carbon_footprint_kg=iot_info['carbon_footprint_kg'],
-                    sustainability_score=max(50.0, 100.0 - (iot_info['energy_kwh']/2000.0 * 20.0) - (iot_info['water_liters_sec']/30.0 * 10.0))
+                    sustainability_score=max(20.0, round(sus_base_score, 1))
                 )
                 db.session.add(sus)
                 

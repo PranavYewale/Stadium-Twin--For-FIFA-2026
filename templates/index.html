@@ -6,8 +6,33 @@
 <!-- Top Header Navigation -->
 <nav class="navbar navbar-dark">
     <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <a class="navbar-brand" href="#"><i class="fa-solid fa-brain me-2 text-info"></i>STADIUM<span>.TWIN</span></a>
+        <a class="navbar-brand brand-logo" href="#" id="brand-logo-btn"><i class="fa-solid fa-cube logo-icon"></i>ARENA<span class="logo-accent">.TWIN</span><span class="logo-sub">OS v1.8</span></a>
         
+        <!-- Navigation Link Shortcuts (SPA Paging Controllers) -->
+        <ul class="nav nav-pills border-0 gap-1 d-flex" id="navShortcutsList" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut active px-2 py-1 text-info" href="#" data-view="overview"><i class="fa-solid fa-table-cells me-1"></i>Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="gemini"><i class="fa-solid fa-sparkles text-info me-1"></i>Gemini Brain</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="lost-child"><i class="fa-solid fa-child text-warning me-1"></i>Lost Child</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="access"><i class="fa-solid fa-wheelchair text-purple me-1"></i>Accessibility</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="queue"><i class="fa-solid fa-calculator text-cyan me-1"></i>Queue AI</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="sentiment"><i class="fa-solid fa-face-smile text-success me-1"></i>Sentiment</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-shortcut px-2 py-1 text-secondary" href="#" data-view="chat"><i class="fa-solid fa-comments text-info me-1"></i>Fan Assist</a>
+            </li>
+        </ul>
+
         <div class="d-flex flex-wrap align-items-center justify-content-center gap-3">
             <div class="nav-status-item">
                 <i class="fa-solid fa-trophy text-warning"></i>
@@ -197,45 +222,218 @@
             </div>
         </div>
 
-        <!-- Selected Zone Info Card -->
+        <!-- Selected Zone & Operations Specialist Assistant Card -->
         <div class="glass-panel p-3">
-            <h3 class="mb-2 fs-5"><i class="fa-solid fa-bullseye me-2 text-info"></i><span data-translate="zone_telemetry">Zone Telemetry Details</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Inspects current occupancy, temperature, security level, and future forecasts for the focused stadium sector."></i></h3>
-            <div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span id="zone-detail-name" class="fw-bold" data-translate="select_zone">Select Stand or Gate</span>
-                    <span id="zone-detail-status" class="color-badge green">GREEN</span>
+            <!-- Nav Tabs -->
+            <ul class="nav nav-tabs border-0 mb-3 gap-1" id="assistantTabs" role="tablist" style="font-size: 13.5px; font-family: var(--font-heading); font-weight: 600;">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active text-uppercase px-2 py-1 border-0 rounded text-info bg-dark bg-opacity-50" id="zone-tab" data-bs-toggle="tab" data-bs-target="#tab-zone-details" type="button" role="tab"><i class="fa-solid fa-bullseye me-1"></i>Zone Tech</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="lost-child-tab" data-bs-toggle="tab" data-bs-target="#tab-lost-child" type="button" role="tab"><i class="fa-solid fa-child me-1"></i>Lost Child</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="access-tab" data-bs-toggle="tab" data-bs-target="#tab-accessibility" type="button" role="tab"><i class="fa-solid fa-wheelchair me-1"></i>Access</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="queue-tab" data-bs-toggle="tab" data-bs-target="#tab-queue-opt" type="button" role="tab"><i class="fa-solid fa-calculator me-1"></i>Queue AI</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-uppercase px-2 py-1 border-0 rounded text-secondary bg-dark bg-opacity-25" id="sentiment-tab" data-bs-toggle="tab" data-bs-target="#tab-sentiment" type="button" role="tab"><i class="fa-solid fa-face-smile me-1"></i>Sentiment</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="assistantTabsContent">
+                <!-- TAB 1: ZONE TELEMETRY DETAILS -->
+                <div class="tab-pane fade show active" id="tab-zone-details" role="tabpanel">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span id="zone-detail-name" class="fw-bold" data-translate="select_zone">Select Stand or Gate</span>
+                        <span id="zone-detail-status" class="color-badge green">GREEN</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+                        <span data-translate="zone_type">Zone Type:</span>
+                        <span id="zone-detail-type" class="text-white">-</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+                        <span data-translate="current_crowd">Current Crowd:</span>
+                        <span id="zone-detail-crowd" class="text-white">-</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
+                        <span data-translate="queue_wait">Queue Wait:</span>
+                        <span id="zone-detail-queue" class="text-white">-</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
+                        <span data-translate="temperature">Temperature:</span>
+                        <span id="zone-detail-temp" class="text-white">-</span>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
+                        <span data-translate="sector_risk">Sector Risk Index:</span>
+                        <span id="zone-detail-risk" class="text-white">-</span>
+                    </div>
+                    
+                    <hr style="border-color: var(--border-color); margin: 8px 0;" />
+                    <span class="d-block text-secondary mb-2 fw-bold" style="font-size: 11px" data-translate="ai_predictions">AI PREDICTION FORECASTS (15-60m)</span>
+                    <div id="zone-detail-predictions">
+                        <span class="text-secondary" style="font-size: 12px" data-translate="click_predictions">Click any sector to query AI predictions...</span>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                    <span data-translate="zone_type">Zone Type:</span>
-                    <span id="zone-detail-type" class="text-white">-</span>
+
+                <!-- TAB 2: LOST CHILD ASSISTANT -->
+                <div class="tab-pane fade" id="tab-lost-child" role="tabpanel">
+                    <div class="d-flex flex-column gap-2">
+                        <span class="d-block text-secondary fw-bold" style="font-size: 12px">REPORT MISSING SPECTATOR</span>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="text" id="lc-name" class="form-control bg-black bg-opacity-50 text-white border-secondary" placeholder="Child Name" style="font-size: 13.5px; height: 36px;" />
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="lc-shirt" class="form-control bg-black bg-opacity-50 text-white border-secondary" placeholder="Shirt Color" style="font-size: 13.5px; height: 36px;" />
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <select id="lc-last-seen" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13.5px; height: 36px;">
+                                    <option value="gate_a">Last Seen: Gate A (North)</option>
+                                    <option value="gate_b">Last Seen: Gate B (East)</option>
+                                    <option value="gate_c">Last Seen: Gate C (West)</option>
+                                    <option value="vip_entrance">Last Seen: VIP Entrance</option>
+                                    <option value="food_court_north">Last Seen: Food Court North</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btn-lc-search" class="btn btn-neon w-100" style="height: 38px; font-size: 13.5px;"><i class="fa-solid fa-magnifying-glass me-1"></i>Initialize Search Grid</button>
+                        
+                        <!-- Spotted Alert Results -->
+                        <div id="lc-result" class="d-none mt-2 p-2 rounded border border-warning bg-black bg-opacity-50 text-warning" style="font-size: 13px;">
+                            <div class="fw-bold mb-1"><i class="fa-solid fa-video me-1"></i>CAMERA FEEDS SPOTTED</div>
+                            <p class="mb-1 text-white" id="lc-result-msg"></p>
+                            <div class="d-flex justify-content-between text-secondary" style="font-size: 11px;">
+                                <span>Spotted Area: <b id="lc-result-zone" class="text-info"></b></span>
+                                <span class="text-success"><i class="fa-solid fa-satellite-dish me-1"></i>Volunteers Notified</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                    <span data-translate="current_crowd">Current Crowd:</span>
-                    <span id="zone-detail-crowd" class="text-white">-</span>
+
+                <!-- TAB 3: ACCESSIBILITY ASSISTANT -->
+                <div class="tab-pane fade" id="tab-accessibility" role="tabpanel">
+                    <div class="d-flex flex-column gap-2">
+                        <span class="d-block text-secondary fw-bold" style="font-size: 12px">ACCESSIBLE TRANSIT ROUTER</span>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <select id="acc-source" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13px; height: 34px;">
+                                    <option value="parking_east">From: Parking East</option>
+                                    <option value="parking_vip">From: Parking VIP</option>
+                                    <option value="metro_station">From: Metro Hub</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <select id="acc-dest" class="form-select bg-black bg-opacity-50 text-white border-secondary" style="font-size: 13px; height: 34px;">
+                                    <option value="stand_lower">To: Lower Stands</option>
+                                    <option value="vip_entrance">To: VIP Suites</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-info btn-acc-type active" data-type="wheelchair" style="font-size: 13px; padding: 6px;"><i class="fa-solid fa-wheelchair me-1"></i>Wheelchair</button>
+                            <button type="button" class="btn btn-outline-info btn-acc-type" data-type="visually_impaired" style="font-size: 13px; padding: 6px;"><i class="fa-solid fa-eye-slash me-1"></i>Audio Guide</button>
+                        </div>
+                        <button id="btn-acc-generate" class="btn btn-outline-info w-100" style="height: 36px; font-size: 13px;"><i class="fa-solid fa-route me-1"></i>Generate Safe Route</button>
+
+                        <!-- Route details -->
+                        <div id="acc-route-box" class="d-none mt-2 p-2 rounded bg-black bg-opacity-50 border border-secondary" style="font-size: 13px;">
+                            <div class="d-flex justify-content-between text-secondary mb-2" style="font-size: 11px;">
+                                <span>Elevator Wait: <b id="acc-wait-time" class="text-warning">0m</b></span>
+                                <span>Seating: <b id="acc-seating" class="text-white">-</b></span>
+                            </div>
+                            <div class="text-secondary fw-bold mb-1" style="font-size: 11px;">ACCESSIBLE DIRECTIONS:</div>
+                            <ol id="acc-directions-list" class="m-0 pl-3 text-white" style="padding-left: 15px; font-size: 12.5px;"></ol>
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between text-secondary mb-1 fs-6">
-                    <span data-translate="queue_wait">Queue Wait:</span>
-                    <span id="zone-detail-queue" class="text-white">-</span>
+
+                <!-- TAB 4: AI QUEUE OPTIMIZER -->
+                <div class="tab-pane fade" id="tab-queue-opt" role="tabpanel">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-secondary fw-bold" style="font-size: 12px">AI PREDICTIVE CONCESSIONS MATRIX</span>
+                            <button id="btn-queue-apply" class="btn btn-neon p-1 px-3" style="font-size: 12px; height: 32px;"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Balance Grid</button>
+                        </div>
+                        <div class="table-responsive m-0">
+                            <table class="table table-dark table-borderless m-0" style="font-size: 13px; --bs-table-bg: transparent;">
+                                <thead>
+                                    <tr class="text-secondary border-bottom border-secondary">
+                                        <th>Concession</th>
+                                        <th>Current Queue</th>
+                                        <th>Forecast (15m)</th>
+                                        <th>AI Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-bold">North Food Court</td>
+                                        <td id="q-n-curr">28 mins</td>
+                                        <td id="q-n-fore" class="text-warning">38 mins</td>
+                                        <td class="text-info fw-semibold">Open 3 registers</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">West Food Court</td>
+                                        <td id="q-w-curr">12 mins</td>
+                                        <td id="q-w-fore">14 mins</td>
+                                        <td class="text-secondary">Optimal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="queue-opt-log" class="d-none p-2 rounded bg-black bg-opacity-50 text-info border border-info" style="font-size: 12.5px;">
+                            <i class="fa-solid fa-circle-check me-1"></i>AI reallocated checkout operators to North concessions!
+                        </div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
-                    <span data-translate="temperature">Temperature:</span>
-                    <span id="zone-detail-temp" class="text-white">-</span>
-                </div>
-                <div class="d-flex justify-content-between text-secondary mb-2 fs-6">
-                    <span data-translate="sector_risk">Sector Risk Index:</span>
-                    <span id="zone-detail-risk" class="text-white">-</span>
-                </div>
-                
-                <hr style="border-color: var(--border-color);" />
-                <span class="d-block text-secondary mb-2 fw-bold" style="font-size: 13px" data-translate="ai_predictions">AI PREDICTION FORECASTS (15-60m)</span>
-                <div id="zone-detail-predictions">
-                    <span class="text-secondary" data-translate="click_predictions">Click any sector to query AI predictions...</span>
+
+                <!-- TAB 5: FAN SENTIMENT TRACKER -->
+                <div class="tab-pane fade" id="tab-sentiment" role="tabpanel">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="text-secondary fw-bold" style="font-size: 12px">REAL-TIME SENTIMENT INDICES</span>
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="text-secondary" style="font-size: 11px;">Happiness:</span>
+                                <b id="sentiment-happiness-score" class="text-success" style="font-size: 13.5px;">92.5%</b>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
+                                    <span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">COMPLAINT HOTSPOTS</span>
+                                    <div id="sentiment-hotspots" class="text-white mt-1" style="font-size: 12px; line-height: 1.2; font-weight: 600;">
+                                        None reported
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-2 rounded bg-black bg-opacity-40 border border-secondary" style="height: 75px; overflow: hidden;">
+                                    <span class="text-secondary d-block" style="font-size: 9.5px; font-weight: bold;">TRENDING ISSUES</span>
+                                    <div id="sentiment-tags" class="d-flex flex-wrap gap-1 mt-1">
+                                        <span class="badge bg-secondary" style="font-size: 9px; padding: 2px 4px;">#wc2026</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-2 rounded bg-black bg-opacity-50 border border-secondary" style="font-size: 13px;">
+                            <div class="text-secondary fw-bold mb-1" style="font-size: 10px;">LIVE SPECTATOR FEEDBACK:</div>
+                            <div id="sentiment-feed-post" class="text-white-50" style="font-style: italic; min-height: 18px;">
+                                Awaiting data feeds...
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Gemini AI recommendation Panel -->
-        <div class="glass-panel p-3 gemini-panel">
+        <div class="glass-panel p-3 gemini-panel hidden-by-view" id="gemini-panel-card">
             <div class="gemini-header">
                 <div class="gemini-avatar">
                     <i class="fa-solid fa-sparkles text-white" style="font-size: 12px"></i>
@@ -264,7 +462,7 @@
         </div>
 
         <!-- Fan Experience Chat Assistant Panel -->
-        <div class="glass-panel p-3">
+        <div class="glass-panel p-3 hidden-by-view" id="fan-portal-card">
             <h3 class="mb-3 fs-5"><i class="fa-solid fa-comments me-2 text-info"></i><span data-translate="fan_assistant_portal">Fan Assistance Portal</span><i class="fa-solid fa-circle-info text-secondary cursor-pointer ms-2" data-bs-toggle="tooltip" title="Multilingual chatbot helper utilizing state parameters to answer fan queries (transit, concessions, lost & found, emergency rules)."></i></h3>
             <div class="chat-container">
                 <div class="chat-messages" id="chat-messages">
@@ -277,7 +475,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    <!-- Toast Container for Notifications -->
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 99999; pointer-events: none; display: flex; flex-direction: column; gap: 8px;"></div>
 </div>
 {% endblock %}
 
@@ -287,6 +486,7 @@
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/assistant.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 <script>
@@ -306,6 +506,7 @@
         initDashboard();
         initChatAssistant();
         initTranslationBindings();
+        initAssistantConsole();
         
         // Focus first zone on startup
         setTimeout(() => {

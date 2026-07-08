@@ -5,6 +5,13 @@ from werkzeug.security import generate_password_hash
 dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/')
+def landing():
+    """
+    Public marketing and introduction landing page for Arena.Twin OS.
+    """
+    return render_template('landing.html')
+
+@dashboard_bp.route('/dashboard')
 def index():
     if 'username' not in session:
         return redirect(url_for('dashboard.login'))
@@ -15,7 +22,7 @@ def index():
     recs = Recommendation.query.all()
     
     # Calculate attendance
-    attendance = sum(z.current_crowd for z in zones if z.zone_type == 'stand')
+    attendance = sum(z.current_crowd for z in zones if z.zone_type.lower() == 'stand')
     
     return render_template(
         'index.html',
@@ -46,7 +53,7 @@ def login():
 @dashboard_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('dashboard.login'))
+    return redirect(url_for('dashboard.landing'))
 
 @dashboard_bp.route('/seed-user')
 def seed_user():

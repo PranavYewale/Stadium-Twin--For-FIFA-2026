@@ -37,7 +37,7 @@ def forecast_zone_telemetry(zone_id, current_crowd, capacity, current_queue, zon
             else:
                 # Over capacity, queue grows
                 trend = -random.randint(5, 15) * (offset / 15)
-        elif zone_type == 'stand':
+        elif zone_type.lower() == 'stand':
             # Stands fill up steadily
             fill_ratio = current_crowd / max(1, capacity)
             if fill_ratio < 0.95:

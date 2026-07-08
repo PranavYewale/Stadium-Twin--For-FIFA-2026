@@ -46,8 +46,8 @@ def resolve_emergency():
     """
     from services.simulation import SIMULATION_OVERRIDES
     
-    critical_alerts = Alert.query.filter_by(level='critical', resolved=False).all()
-    for alert in critical_alerts:
+    active_alerts = Alert.query.filter_by(resolved=False).all()
+    for alert in active_alerts:
         alert.resolved = True
         
     # Reset simulator overrides
@@ -70,5 +70,5 @@ def resolve_emergency():
     
     return jsonify({
         'status': 'Normal Operations Restored',
-        'resolved_count': len(critical_alerts)
+        'resolved_count': len(active_alerts)
     })
