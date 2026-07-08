@@ -10,10 +10,13 @@ Arena.Twin is an intelligent operating system built for a FIFA World Cup 2026 st
 ---
 
 ## 📸 Interface Preview
-*(Place screenshots of your running dashboard here)*
-* [Placeholder: Main Operator Console Overview](image_main_console.png)
-* [Placeholder: 3D Twin & Live GIS Map](image_map_twin.png)
-* [Placeholder: AI Queue Optimizer & Lost Child Dispatcher](image_assistants.png)
+
+* [Placeholder: Main Operator Console Overview]<img width="1918" height="908" alt="image" src="https://github.com/user-attachments/assets/930bd4cd-f677-4043-82ad-b398d6388a21" />
+
+* [Placeholder: 3D Twin & Live GIS Map]<img width="1287" height="656" alt="image" src="https://github.com/user-attachments/assets/885e9d20-5a03-41cf-9a80-5ca533dbda45" />
+
+* [Placeholder: AI Queue Optimizer & Lost Child Dispatcher]<img width="830" height="299" alt="image" src="https://github.com/user-attachments/assets/a5df1e40-45c8-4c9a-9993-1481e0414598" />
+
 
 ---
 
