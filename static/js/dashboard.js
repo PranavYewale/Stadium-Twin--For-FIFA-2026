@@ -14,8 +14,10 @@ const spokenAlerts = new Set();
 const congestedZones = new Set();
 
 function initDashboard() {
-    // 1. Initialize WebSockets
-    socket = io();
+    const isPythonAnywhere = window.location.hostname.includes('pythonanywhere');
+    socket = io({
+        transports: isPythonAnywhere ? ['polling'] : ['polling', 'websocket']
+    });
     
     socket.on('connect', () => {
         logConsole('SYSTEM', 'Connected to Stadium Brain digital twin OS.', 'info');
